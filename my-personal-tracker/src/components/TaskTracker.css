@@ -1,0 +1,42 @@
+.task-tracker {
+    background-color: #000;
+    border: 2px solid #ff00ff; /* Bordure néon rose */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+    color: #ff00ff;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .task-tracker h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #ff00ff;
+  }
+  
+  .task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #111;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .task-item:hover {
+    background-color: #222;
+  }
+  
+  .task-item input {
+    margin-right: 10px;
+    transform: scale(1.5);
+  }
+  
+  .task-item:hover input {
+    background-color: #ff00ff;
+  }

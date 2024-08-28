@@ -1,0 +1,42 @@
+.sleep-tracker {
+    background-color: #000;
+    border: 2px solid #0ff; /* Bordure néon */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
+    color: #0ff;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .sleep-tracker h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #0ff;
+  }
+  
+  .sleep-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #111;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sleep-item:hover {
+    background-color: #222;
+  }
+  
+  .sleep-item input {
+    margin-right: 10px;
+    transform: scale(1.5);
+  }
+  
+  .sleep-item:hover input {
+    background-color: #0ff;
+  }

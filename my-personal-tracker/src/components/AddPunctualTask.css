@@ -1,0 +1,32 @@
+.add-punctual-task {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .add-punctual-task input {
+    padding: 10px;
+    border: 2px solid #00ff00;
+    background-color: #000;
+    color: #00ff00;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
+  }
+  
+  .add-punctual-task button {
+    padding: 10px 20px;
+    background-color: #00ff00;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-punctual-task button:hover {
+    background-color: #00cc00;
+  }

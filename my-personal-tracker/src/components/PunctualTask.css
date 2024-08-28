@@ -1,0 +1,42 @@
+.punctual-task {
+    background-color: #000;
+    border: 2px solid #00ff00; /* Bordure néon verte */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
+    color: #00ff00;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .punctual-task h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #00ff00;
+  }
+  
+  .task-p-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #111;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
+    transition: background-color 0.3s ease;
+  }
+  
+  .task-p-item:hover {
+    background-color: #222;
+  }
+  
+  .task-p-item input {
+    margin-right: 10px;
+    transform: scale(1.5);
+  }
+  
+  .task-p-item:hover input {
+    background-color: #00ff00;
+  }
