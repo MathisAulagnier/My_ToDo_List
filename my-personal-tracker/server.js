@@ -1,8 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs').promises;  // Utilisez `fs.promises` pour permettre l'utilisation de promesses avec `fs`
+const fs = require('fs').promises;
 const path = require('path');
-const Papa = require('papaparse');
 
 const app = express();
 const PORT = 3001;
@@ -17,53 +16,74 @@ app.use((req, res, next) => {
   next();
 });
 
-// Endpoint pour récupérer les tâches
-app.get('/tasks', (req, res) => {
-  fs.readFile(path.join(__dirname, 'public', 'punctualTasks.json'), 'utf8')
-    .then(data => res.json(JSON.parse(data)))
-    .catch(err => res.status(500).send('Erreur de lecture du fichier.'));
+// Endpoint pour récupérer les tâches ponctuelles
+app.get('/tasks', async (req, res) => {
+  try {
+    const data = await fs.readFile(path.join(__dirname, 'public', 'punctualTasks.json'), 'utf8');
+    res.json(JSON.parse(data));
+  } catch (err) {
+    res.status(500).send('Erreur de lecture du fichier.');
+  }
 });
 
-// Endpoint pour mettre à jour le fichier JSON
-app.post('/tasks', (req, res) => {
+// Endpoint pour mettre à jour le fichier JSON des tâches ponctuelles
+app.post('/tasks', async (req, res) => {
   const updatedTasks = req.body;
 
-  fs.writeFile(
-    path.join(__dirname, 'public', 'punctualTasks.json'),
-    JSON.stringify(updatedTasks, null, 2)
-  )
-    .then(() => res.send('Fichier mis à jour avec succès.'))
-    .catch(err => res.status(500).send('Erreur lors de l\'écriture du fichier.'));
+  try {
+    await fs.writeFile(
+      path.join(__dirname, 'public', 'punctualTasks.json'),
+      JSON.stringify(updatedTasks, null, 2)
+    );
+    res.send('Fichier mis à jour avec succès.');
+  } catch (err) {
+    res.status(500).send('Erreur lors de l\'écriture du fichier.');
+  }
 });
 
-// Endpoint pour récupérer les données du fichier CSV
-app.get('/tracker', (req, res) => {
-  const csvFilePath = path.join(__dirname, 'public', 'tracker.csv');
-
-  fs.readFile(csvFilePath, 'utf8')
-    .then((csvData) => {
-      const jsonData = Papa.parse(csvData, { header: true });
-      res.json(jsonData.data);
-    })
-    .catch(err => res.status(500).send('Erreur de lecture du fichier CSV.'));
+// Endpoint pour récupérer les données du tracker d'humeurs
+app.get('/mood-tracker', async (req, res) => {
+  try {
+    const data = await fs.readFile(path.join(__dirname, 'public', 'moodtracker.json'), 'utf8');
+    res.json(JSON.parse(data));
+  } catch (err) {
+    res.status(500).send('Erreur de lecture du fichier moodtracker.json.');
+  }
 });
 
-// Endpoint pour mettre à jour le fichier CSV
-app.post('/tracker', (req, res) => {
-  const updatedData = req.body; // Nouvelle donnée à ajouter
-  const csvFilePath = path.join(__dirname, 'public', 'tracker.csv');
+app.post('/update-mood', async (req, res) => {
+  const { date, mood } = req.body;
 
-  fs.readFile(csvFilePath, 'utf8')
-    .then((csvData) => {
-      const jsonData = Papa.parse(csvData, { header: true }).data;
-      jsonData.push(updatedData);
+  try {
+    const filePath = path.join(__dirname, 'public', 'moodtracker.json');
+    console.log(`Tentative de mise à jour pour la date: ${date} avec l'humeur: ${mood}`);
+    
+    const data = await fs.readFile(filePath, 'utf8');
+    const jsonData = JSON.parse(data);
 
-      const csv = Papa.unparse(jsonData);
+    // Trouver l'entrée avec la date correspondante
+    const existingEntry = jsonData.find(entry => entry.Date === date);
 
-      return fs.writeFile(csvFilePath, csv);
-    })
-    .then(() => res.send('Fichier CSV mis à jour avec succès.'))
-    .catch(err => res.status(500).send('Erreur lors de la mise à jour du fichier CSV.'));
+    if (existingEntry) {
+      // Mise à jour de l'humeur pour cette date
+      existingEntry.Moods = mood;
+      console.log(`Humeur mise à jour pour la date: ${date}`);
+    } else {
+      // Créer une nouvelle entrée si la date n'existe pas
+      jsonData.push({
+        Date: date,
+        Moods: mood
+      });
+      console.log(`Nouvelle entrée ajoutée pour la date: ${date}`);
+    }
+
+    // Écriture dans le fichier JSON
+    await fs.writeFile(filePath, JSON.stringify(jsonData, null, 2));
+    res.send('Humeur mise à jour avec succès dans moodtracker.json.');
+  } catch (err) {
+    console.error('Erreur lors de la mise à jour du fichier moodtracker.json:', err);
+    res.status(500).send('Erreur lors de la mise à jour du fichier moodtracker.json.');
+  }
 });
 
 app.listen(PORT, () => {

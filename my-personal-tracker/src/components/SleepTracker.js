@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './SleepTracker.css'; // Import du CSS pour les styles néon
 
 const SleepTracker = () => {
@@ -14,13 +14,24 @@ const SleepTracker = () => {
     { id: 8, text: 'Sommeil agité', selected: false },
   ]);
 
-  // Fonction pour sélectionner/désélectionner une qualité de sommeil
-  const toggleSleepQuality = (id) => {
+  // Fonction pour sélectionner une qualité de sommeil
+  const selectSleepQuality = (id) => {
     const updatedSleepQuality = sleepQuality.map((sleep) =>
-      sleep.id === id ? { ...sleep, selected: !sleep.selected } : sleep
+      sleep.id === id
+        ? { ...sleep, selected: true }
+        : { ...sleep, selected: false }
     );
     setSleepQuality(updatedSleepQuality);
   };
+
+  // Utiliser useEffect pour initialiser la sélection par défaut
+  useEffect(() => {
+    const defaultSleepId = sleepQuality.find(sleep => sleep.text === 'Sommeil fragmenté').id;
+    const hasSelectedSleep = sleepQuality.some(sleep => sleep.selected);
+    if (!hasSelectedSleep) {
+      selectSleepQuality(defaultSleepId);
+    }
+  }, [sleepQuality]);
 
   return (
     <div className="sleep-tracker">
@@ -30,7 +41,7 @@ const SleepTracker = () => {
           <input
             type="checkbox"
             checked={sleep.selected}
-            onChange={() => toggleSleepQuality(sleep.id)}
+            onChange={() => selectSleepQuality(sleep.id)}
           />
           {sleep.text}
         </div>
