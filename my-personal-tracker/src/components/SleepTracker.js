@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './SleepTracker.css'; // Import du CSS pour les styles néon
 
 const SleepTracker = () => {
-  // États pour la qualité du sommeil
   const [sleepQuality, setSleepQuality] = useState([
     { id: 1, text: 'Dormir comme un bébé', selected: false },
     { id: 2, text: 'Sommeil profond', selected: false },
@@ -14,24 +13,66 @@ const SleepTracker = () => {
     { id: 8, text: 'Sommeil agité', selected: false },
   ]);
 
-  // Fonction pour sélectionner une qualité de sommeil
-  const selectSleepQuality = (id) => {
+  const [selectedSleep, setSelectedSleep] = useState(null);
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    let day = d.getDate();
+    let month = d.getMonth() + 1;
+    const year = d.getFullYear();
+
+    if (day < 10) day = '0' + day;
+    if (month < 10) month = '0' + month;
+
+    return `${year}-${month}-${day}`; // Format YYYY-MM-DD
+  };
+
+  const selectSleepQuality = useCallback((id) => {
+    const selected = sleepQuality.find(sleep => sleep.id === id).text;
     const updatedSleepQuality = sleepQuality.map((sleep) =>
       sleep.id === id
         ? { ...sleep, selected: true }
         : { ...sleep, selected: false }
     );
     setSleepQuality(updatedSleepQuality);
+    setSelectedSleep(selected);
+  }, [sleepQuality]);
+
+  const validateSleepQuality = async () => {
+    if (!selectedSleep) return; // Si aucune qualité de sommeil n'est sélectionnée, ne rien faire.
+
+    const currentDate = formatDate(new Date());
+
+    try {
+      const response = await fetch('http://localhost:3001/api/sleep', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Date: currentDate,
+          Sleep: selectedSleep,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour du SleepTracker');
+      }
+
+      alert('SleepTracker mis à jour avec succès');
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du SleepTracker:', error);
+      alert('Erreur lors de la mise à jour du SleepTracker');
+    }
   };
 
-  // Utiliser useEffect pour initialiser la sélection par défaut
   useEffect(() => {
     const defaultSleepId = sleepQuality.find(sleep => sleep.text === 'Sommeil fragmenté').id;
     const hasSelectedSleep = sleepQuality.some(sleep => sleep.selected);
     if (!hasSelectedSleep) {
       selectSleepQuality(defaultSleepId);
     }
-  }, [sleepQuality]);
+  }, [sleepQuality, selectSleepQuality]);
 
   return (
     <div className="sleep-tracker">
@@ -46,6 +87,7 @@ const SleepTracker = () => {
           {sleep.text}
         </div>
       ))}
+      <button onClick={validateSleepQuality}>Valider</button>
     </div>
   );
 };

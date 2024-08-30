@@ -41,48 +41,81 @@ app.post('/tasks', async (req, res) => {
   }
 });
 
-// Endpoint pour récupérer les données du tracker d'humeurs
-app.get('/mood-tracker', async (req, res) => {
+// Endpoint pour récupérer les humeurs
+app.get('/api/moods', async (req, res) => {
   try {
-    const data = await fs.readFile(path.join(__dirname, 'public', 'moodtracker.json'), 'utf8');
+    const moodDataPath = path.join(__dirname, 'public', 'moodtracker.json');
+    const data = await fs.readFile(moodDataPath, 'utf-8');
     res.json(JSON.parse(data));
-  } catch (err) {
-    res.status(500).send('Erreur de lecture du fichier moodtracker.json.');
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la récupération des données' });
   }
 });
 
-app.post('/update-mood', async (req, res) => {
-  const { date, mood } = req.body;
+// Endpoint pour mettre à jour ou ajouter une humeur
+app.post('/api/moods', async (req, res) => {
+  const { Date, Moods } = req.body;
+
+  if (!Date || !Moods) {
+    return res.status(400).json({ error: 'Date et Moods sont requis' });
+  }
 
   try {
-    const filePath = path.join(__dirname, 'public', 'moodtracker.json');
-    console.log(`Tentative de mise à jour pour la date: ${date} avec l'humeur: ${mood}`);
-    
-    const data = await fs.readFile(filePath, 'utf8');
-    const jsonData = JSON.parse(data);
+    const moodDataPath = path.join(__dirname, 'public', 'moodtracker.json');
+    const data = await fs.readFile(moodDataPath, 'utf-8');
+    let moodData = JSON.parse(data);
 
-    // Trouver l'entrée avec la date correspondante
-    const existingEntry = jsonData.find(entry => entry.Date === date);
+    // Vérifie si une entrée existe pour la date donnée
+    const existingEntryIndex = moodData.findIndex((entry) => entry.Date === Date);
 
-    if (existingEntry) {
-      // Mise à jour de l'humeur pour cette date
-      existingEntry.Moods = mood;
-      console.log(`Humeur mise à jour pour la date: ${date}`);
+    if (existingEntryIndex >= 0) {
+      // Si l'entrée existe, modifie-la
+      moodData[existingEntryIndex].Moods = Moods;
     } else {
-      // Créer une nouvelle entrée si la date n'existe pas
-      jsonData.push({
-        Date: date,
-        Moods: mood
-      });
-      console.log(`Nouvelle entrée ajoutée pour la date: ${date}`);
+      // Sinon, ajoute une nouvelle entrée
+      moodData.push({ Date, Moods });
     }
 
-    // Écriture dans le fichier JSON
-    await fs.writeFile(filePath, JSON.stringify(jsonData, null, 2));
-    res.send('Humeur mise à jour avec succès dans moodtracker.json.');
-  } catch (err) {
-    console.error('Erreur lors de la mise à jour du fichier moodtracker.json:', err);
-    res.status(500).send('Erreur lors de la mise à jour du fichier moodtracker.json.');
+    // Écris les données mises à jour dans le fichier
+    await fs.writeFile(moodDataPath, JSON.stringify(moodData, null, 2));
+    res.json({ message: 'Humeur mise à jour avec succès' });
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la mise à jour des données' });
+  }
+});
+
+// Endpoint pour récupérer les humeurs
+app.get('/api/sleep', async (req, res) => {
+  try {
+    const sleepDataPath = path.join(__dirname, 'public', 'sleeptracker.json');
+    const data = await fs.readFile(sleepDataPath, 'utf-8');
+    res.json(JSON.parse(data));
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la récupération des données' });
+  }
+});
+
+app.post('/api/sleep', async (req, res) => {
+  const { Date, Sleep } = req.body;
+
+  try {
+    const filePath = path.join(__dirname, 'public', 'sleeptracker.json');
+    const data = await fs.readFile(filePath, 'utf8');
+    const sleepData = JSON.parse(data);
+
+    // Update or add the sleep entry for the given date
+    const existingEntry = sleepData.find(entry => entry.Date === Date);
+    if (existingEntry) {
+      existingEntry.Sleep = Sleep;
+    } else {
+      sleepData.push({ Date, Sleep });
+    }
+
+    await fs.writeFile(filePath, JSON.stringify(sleepData, null, 2));
+    res.status(200).send({ message: 'SleepTracker updated successfully' });
+  } catch (error) {
+    console.error('Error updating SleepTracker:', error);
+    res.status(500).send({ message: 'Error updating SleepTracker' });
   }
 });
 

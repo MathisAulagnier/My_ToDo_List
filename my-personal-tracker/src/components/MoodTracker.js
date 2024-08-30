@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './MoodTracker.css';
+import React, { useState, useEffect, useCallback } from 'react';
+import './MoodTracker.css'; // Import du CSS pour les styles néon
 
 const MoodTracker = () => {
   const [moods, setMoods] = useState([
@@ -15,41 +15,52 @@ const MoodTracker = () => {
 
   const [selectedMood, setSelectedMood] = useState(null);
 
-  const selectMood = (id) => {
-    const selectedMoodText = moods.find(mood => mood.id === id).text;
+  const formatDate = (date) => {
+    const d = new Date(date);
+    let day = d.getDate();
+    let month = d.getMonth() + 1;
+    const year = d.getFullYear();
+
+    if (day < 10) day = '0' + day;
+    if (month < 10) month = '0' + month;
+
+    return `${year}-${month}-${day}`; // Format YYYY-MM-DD
+  };
+
+  const selectMood = useCallback((id) => {
+    const selected = moods.find(mood => mood.id === id).text;
     const updatedMoods = moods.map((mood) =>
       mood.id === id ? { ...mood, selected: true } : { ...mood, selected: false }
     );
     setMoods(updatedMoods);
-    setSelectedMood(selectedMoodText);
-  };
+    setSelectedMood(selected);
+  }, [moods]);
 
-  const handleValidation = async () => {
-    if (selectedMood) {
-      try {
-        const currentDate = new Date().toISOString().split('T')[0];
+  const validateMood = async () => {
+    if (!selectedMood) return; // Si aucune humeur n'est sélectionnée, ne rien faire.
 
-        const response = await fetch('/update-mood', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            date: currentDate,
-            mood: selectedMood,
-          }),
-        });
+    const currentDate = formatDate(new Date()); // Utilise formatDate pour obtenir la bonne date
 
-        if (!response.ok) {
-          throw new Error('Erreur lors de la mise à jour de moodtracker.json');
-        }
+    try {
+      const response = await fetch('http://localhost:3001/api/moods', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Date: currentDate,
+          Moods: selectedMood,
+        }),
+      });
 
-        console.log('MoodTracker: Humeur mise à jour avec succès dans moodtracker.json');
-      } catch (error) {
-        console.error('Erreur:', error);
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour du MoodTracker');
       }
-    } else {
-      console.log('Aucune humeur sélectionnée');
+
+      alert('MoodTracker mis à jour avec succès');
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du MoodTracker:', error);
+      alert('Erreur lors de la mise à jour du MoodTracker');
     }
   };
 
@@ -59,7 +70,7 @@ const MoodTracker = () => {
     if (!hasSelectedMood) {
       selectMood(defaultMoodId);
     }
-  }, [moods]);
+  }, [moods, selectMood]);
 
   return (
     <div className="mood-tracker">
@@ -74,7 +85,7 @@ const MoodTracker = () => {
           {mood.text}
         </div>
       ))}
-      <button onClick={handleValidation}>Valider</button>
+      <button onClick={validateMood}>Valider</button>
     </div>
   );
 };
