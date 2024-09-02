@@ -1,31 +1,29 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './SleepTracker.css'; // Import du CSS pour les styles néon
 
-const sleepScores = {
-  'Dormir comme un bébé': 9,
-  'Sommeil profond': 7,
-  'Sommeil fragmenté': 5,
-  'Sommeil anxieux': 4,
-  'Insomnie': 3,
-  'Sommeil difficile': 2,
-  'Nuit blanche': 0,
-  'Sommeil agité': 4,
-};
-
 const SleepTracker = () => {
   const [sleepQuality, setSleepQuality] = useState([
-    { id: 1, text: 'Dormir comme un bébé', selected: false },
-    { id: 2, text: 'Sommeil profond', selected: false },
-    { id: 3, text: 'Sommeil fragmenté', selected: false },
-    { id: 4, text: 'Sommeil anxieux', selected: false },
-    { id: 5, text: 'Insomnie', selected: false },
-    { id: 6, text: 'Sommeil difficile', selected: false },
+    { id: 1, text: 'Excellent', selected: false },
+    { id: 2, text: 'Bien', selected: false },
+    { id: 3, text: 'Normal', selected: false },
+    { id: 4, text: 'Trop chaud/froid', selected: false },
+    { id: 5, text: 'Pas assez', selected: false },
+    { id: 6, text: 'Mal', selected: false },
     { id: 7, text: 'Nuit blanche', selected: false },
-    { id: 8, text: 'Sommeil agité', selected: false },
   ]);
 
   const [selectedSleep, setSelectedSleep] = useState(null);
-  const [dataLoaded, setDataLoaded] = useState(false); // Pour suivre si les données ont été chargées
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  const sleepScores = {
+    'Excellent': 9,
+    'Bien': 7,
+    'Normal': 5,
+    'Trop chaud/froid': 4,
+    'Pas assez': 3,
+    'Mal': 2,
+    'Nuit blanche': 0,
+  };
 
   const formatDate = (date) => {
     const d = new Date(date);
@@ -54,7 +52,7 @@ const SleepTracker = () => {
     if (!selectedSleep) return; // Si aucune qualité de sommeil n'est sélectionnée, ne rien faire.
 
     const currentDate = formatDate(new Date());
-    const score = sleepScores[selectedSleep]; // Récupère le score associé à la qualité de sommeil sélectionnée
+    const score = sleepScores[selectedSleep];
 
     try {
       const response = await fetch('http://localhost:3001/api/sleep', {
@@ -94,26 +92,26 @@ const SleepTracker = () => {
           const sleepId = sleepQuality.find(sleep => sleep.text === existingSleep.Sleep).id;
           selectSleepQuality(sleepId);
         } else {
-          const defaultSleepId = sleepQuality.find(sleep => sleep.text === 'Sommeil fragmenté').id;
+          const defaultSleepId = sleepQuality.find(sleep => sleep.text === 'Normal').id;
           selectSleepQuality(defaultSleepId);
         }
       } catch (error) {
         console.error('Erreur lors de la récupération des données de sommeil:', error);
-        const defaultSleepId = sleepQuality.find(sleep => sleep.text === 'Sommeil fragmenté').id;
+        const defaultSleepId = sleepQuality.find(sleep => sleep.text === 'Normal').id;
         selectSleepQuality(defaultSleepId);
       } finally {
-        setDataLoaded(true); // Marque les données comme chargées
+        setDataLoaded(true);
       }
     };
 
-    if (!dataLoaded) { // Ne pas recharger les données si elles ont déjà été chargées
+    if (!dataLoaded) {
       fetchSleepData();
     }
   }, [sleepQuality, selectSleepQuality, dataLoaded]);
 
   return (
     <div className="sleep-tracker">
-      <h2>Qualité du sommeil</h2>
+      <h2>Sleep Quality</h2>
       {sleepQuality.map((sleep) => (
         <div key={sleep.id} className="sleep-item">
           <input

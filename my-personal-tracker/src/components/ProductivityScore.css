@@ -1,0 +1,24 @@
+.productivity-score {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+  }
+  
+  .score-ticket {
+    text-align: left;
+  }
+  
+  .score-ticket p {
+    margin: 0 0 10px;
+    font-size: 16px;
+  }
+  
+  .score-ticket hr {
+    border: 0;
+    border-top: 1px solid #000;
+    margin: 10px 0;
+  }

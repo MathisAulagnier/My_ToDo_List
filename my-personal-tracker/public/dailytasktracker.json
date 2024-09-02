@@ -2,24 +2,32 @@
   {
     "Date": "2024-08-30",
     "Tasks": [
-      "100 Pompes",
-      "Petit déjeuner",
-      "Méditation",
-      "Lecture",
-      "Exercice physique"
-    ]
+      "100 Pompes"
+    ],
+    "Score": 5
   },
   {
     "Date": "2024-08-31",
     "Tasks": [
-      "Méditation",
-      "Lecture"
-    ]
+      "100 pompes",
+      "Séance de sport",
+      "Prendre des nouvelles"
+    ],
+    "Score": 15
   },
   {
     "Date": "2024-09-01",
     "Tasks": [
-      "100 Pompes"
-    ]
+      "Projet Personnel"
+    ],
+    "Score": 5
+  },
+  {
+    "Date": "2024-09-02",
+    "Tasks": [
+      "100 Pompes",
+      "Prendre des nouvelles"
+    ],
+    "Score": 10
   }
 ]

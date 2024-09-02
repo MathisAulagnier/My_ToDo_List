@@ -3,6 +3,7 @@ import './AddPunctualTask.css';
 
 const AddPunctualTask = ({ onTaskAdded }) => {
   const [newTask, setNewTask] = useState('');
+  const [priority, setPriority] = useState('moyen'); // Priorité par défaut
 
   const handleAddTask = () => {
     if (newTask.trim() === '') return;
@@ -11,9 +12,9 @@ const AddPunctualTask = ({ onTaskAdded }) => {
       id: Date.now(),
       text: newTask,
       completed: false,
+      importance: priority, // Ajouter l'importance sélectionnée
     };
 
-    // Récupérer les tâches actuelles depuis le serveur
     fetch('http://localhost:3001/tasks', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -22,7 +23,6 @@ const AddPunctualTask = ({ onTaskAdded }) => {
       .then((currentTasks) => {
         const updatedTasks = [...currentTasks, newTaskObj];
 
-        // Réécriture du fichier JSON via le serveur
         fetch('http://localhost:3001/tasks', {
           method: 'POST', 
           headers: { 'Content-Type': 'application/json' },
@@ -30,6 +30,7 @@ const AddPunctualTask = ({ onTaskAdded }) => {
         })
         .then(() => {
           setNewTask('');
+          setPriority('moyen'); // Réinitialiser la priorité au niveau par défaut
           onTaskAdded(newTaskObj);
         })
         .catch((error) => console.error('Erreur lors de la mise à jour des tâches :', error));
@@ -45,6 +46,14 @@ const AddPunctualTask = ({ onTaskAdded }) => {
         onChange={(e) => setNewTask(e.target.value)}
         placeholder="Add Punctual Task"
       />
+      <select
+        value={priority}
+        onChange={(e) => setPriority(e.target.value)}
+      >
+        <option value="faible">Faible</option>
+        <option value="moyen">Moyen</option>
+        <option value="élevé">Forte</option>
+      </select>
       <button onClick={handleAddTask}>Add</button>
     </div>
   );

@@ -1,18 +1,32 @@
 [
-    {
-        "Date": "2024-08-27",
-        "ExtraTasks": "Appeler le docteur, Acheter du lait"
-    },
-    {
-        "Date": "2024-08-28",
-        "ExtraTasks": ""
-    },
-    {
-        "Date": "2024-08-29",
-        "ExtraTasks": ""
-    },
-    {
-        "Date": "2024-08-30",
-        "ExtraTasks": ""
-    }
+  {
+    "Date": "2024-09-02",
+    "ExtraTasks": [
+      {
+        "id": 1725290583470,
+        "text": "NormalT",
+        "completed": true,
+        "importance": "moyen"
+      },
+      {
+        "id": 1725290599736,
+        "text": "FaibleT",
+        "completed": true,
+        "importance": "moyen"
+      },
+      {
+        "id": 1725290605866,
+        "text": "feaferzv",
+        "completed": true,
+        "importance": "faible"
+      },
+      {
+        "id": 1725290618328,
+        "text": "dxqeac",
+        "completed": true,
+        "importance": "élevé"
+      }
+    ],
+    "Score": 20
+  }
 ]

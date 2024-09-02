@@ -1,16 +1,31 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './TaskTracker.css'; // Import du CSS pour les styles néon
 
+const taskPoints = {
+  '100 Pompes': 5,
+  'Séance de sport': 5,
+  'Prendre des nouvelles': 5,
+  'Etudier': 5,
+  'Projet Personnel': 5,
+  'Manger équilibré': 5,
+  'Lire 30min': 5,
+  'Echecs': 5,
+  'Temps d\'écran < 3 heures': 5,
+  'Apprendre quelque chose de nouveau': 5,
+};
+
 const TaskTracker = () => {
   const [tasks, setTasks] = useState([
     { id: 1, text: '100 Pompes', completed: false },
-    { id: 2, text: 'Petit déjeuner', completed: false },
-    { id: 3, text: 'Méditation', completed: false },
-    { id: 4, text: 'Lecture', completed: false },
-    { id: 5, text: 'Étude', completed: false },
-    { id: 6, text: 'Exercice physique', completed: false },
-    { id: 7, text: 'Relaxation', completed: false },
-    { id: 8, text: 'Coucher tôt', completed: false },
+    { id: 2, text: 'Séance de sport', completed: false },
+    { id: 3, text: 'Prendre des nouvelles', completed: false },
+    { id: 4, text: 'Etudier', completed: false },
+    { id: 5, text: 'Projet Personnel', completed: false },
+    { id: 6, text: 'Manger équilibré', completed: false },
+    { id: 7, text: 'Lire 30min', completed: false },
+    { id: 8, text: 'Echecs', completed: false },
+    { id: 9, text: 'Temps d\'écran < 3 heures', completed: false },
+    { id: 10, text: 'Apprendre quelque chose de nouveau', completed: false },
   ]);
 
   const formatDate = (date) => {
@@ -35,6 +50,7 @@ const TaskTracker = () => {
   const validateTasks = async () => {
     const completedTasks = tasks.filter(task => task.completed).map(task => task.text);
     const currentDate = formatDate(new Date());
+    const score = completedTasks.reduce((acc, task) => acc + (taskPoints[task] || 0), 0);
 
     try {
       const response = await fetch('http://localhost:3001/api/daily-tasks', {
@@ -45,6 +61,7 @@ const TaskTracker = () => {
         body: JSON.stringify({
           Date: currentDate,
           Tasks: completedTasks,
+          Score: score,
         }),
       });
 
@@ -67,7 +84,6 @@ const TaskTracker = () => {
         const response = await fetch('http://localhost:3001/api/daily-tasks');
         const data = await response.json();
 
-        // Vérifiez si les données sont définies et si la date actuelle est présente
         if (Array.isArray(data)) {
           const todaysTasks = data.find(entry => entry.Date === currentDate);
           if (todaysTasks) {
@@ -86,7 +102,7 @@ const TaskTracker = () => {
     };
 
     fetchTasks();
-  }, []); // Notez que je n'ai pas inclus `tasks` dans la liste de dépendances
+  }, []);
 
   return (
     <div className="task-tracker">
