@@ -40,3 +40,18 @@
   .task-item:hover input {
     background-color: #ff00ff;
   }
+
+  .task-tracker button {
+    padding: 10px 20px;
+    background-color: #ff00ff;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .task-tracker button:hover {
+    background-color: #c300ff;
+  }

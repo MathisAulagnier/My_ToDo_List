@@ -1,6 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './SleepTracker.css'; // Import du CSS pour les styles néon
 
+const sleepScores = {
+  'Dormir comme un bébé': 9,
+  'Sommeil profond': 7,
+  'Sommeil fragmenté': 5,
+  'Sommeil anxieux': 4,
+  'Insomnie': 3,
+  'Sommeil difficile': 2,
+  'Nuit blanche': 0,
+  'Sommeil agité': 4,
+};
+
 const SleepTracker = () => {
   const [sleepQuality, setSleepQuality] = useState([
     { id: 1, text: 'Dormir comme un bébé', selected: false },
@@ -14,6 +25,7 @@ const SleepTracker = () => {
   ]);
 
   const [selectedSleep, setSelectedSleep] = useState(null);
+  const [dataLoaded, setDataLoaded] = useState(false); // Pour suivre si les données ont été chargées
 
   const formatDate = (date) => {
     const d = new Date(date);
@@ -42,6 +54,7 @@ const SleepTracker = () => {
     if (!selectedSleep) return; // Si aucune qualité de sommeil n'est sélectionnée, ne rien faire.
 
     const currentDate = formatDate(new Date());
+    const score = sleepScores[selectedSleep]; // Récupère le score associé à la qualité de sommeil sélectionnée
 
     try {
       const response = await fetch('http://localhost:3001/api/sleep', {
@@ -52,6 +65,7 @@ const SleepTracker = () => {
         body: JSON.stringify({
           Date: currentDate,
           Sleep: selectedSleep,
+          Score: score,
         }),
       });
 
@@ -67,16 +81,39 @@ const SleepTracker = () => {
   };
 
   useEffect(() => {
-    const defaultSleepId = sleepQuality.find(sleep => sleep.text === 'Sommeil fragmenté').id;
-    const hasSelectedSleep = sleepQuality.some(sleep => sleep.selected);
-    if (!hasSelectedSleep) {
-      selectSleepQuality(defaultSleepId);
+    const fetchSleepData = async () => {
+      const currentDate = formatDate(new Date());
+
+      try {
+        const response = await fetch('http://localhost:3001/api/sleep');
+        const data = await response.json();
+
+        const existingSleep = data.find(sleep => sleep.Date === currentDate);
+
+        if (existingSleep) {
+          const sleepId = sleepQuality.find(sleep => sleep.text === existingSleep.Sleep).id;
+          selectSleepQuality(sleepId);
+        } else {
+          const defaultSleepId = sleepQuality.find(sleep => sleep.text === 'Sommeil fragmenté').id;
+          selectSleepQuality(defaultSleepId);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération des données de sommeil:', error);
+        const defaultSleepId = sleepQuality.find(sleep => sleep.text === 'Sommeil fragmenté').id;
+        selectSleepQuality(defaultSleepId);
+      } finally {
+        setDataLoaded(true); // Marque les données comme chargées
+      }
+    };
+
+    if (!dataLoaded) { // Ne pas recharger les données si elles ont déjà été chargées
+      fetchSleepData();
     }
-  }, [sleepQuality, selectSleepQuality]);
+  }, [sleepQuality, selectSleepQuality, dataLoaded]);
 
   return (
     <div className="sleep-tracker">
-      <h2>Sleep Quality</h2>
+      <h2>Qualité du sommeil</h2>
       {sleepQuality.map((sleep) => (
         <div key={sleep.id} className="sleep-item">
           <input

@@ -13,5 +13,10 @@
     "id": 1724798315480,
     "text": "Ajouter une Webographie au Rapport",
     "completed": false
+  },
+  {
+    "id": 1725058755615,
+    "text": "Puis ajouter un score par tache (ask GPT)",
+    "completed": false
   }
 ]

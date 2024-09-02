@@ -54,10 +54,10 @@ app.get('/api/moods', async (req, res) => {
 
 // Endpoint pour mettre à jour ou ajouter une humeur
 app.post('/api/moods', async (req, res) => {
-  const { Date, Moods } = req.body;
+  const { Date, Mood, Score } = req.body;
 
-  if (!Date || !Moods) {
-    return res.status(400).json({ error: 'Date et Moods sont requis' });
+  if (!Date || !Mood || Score === undefined) {
+    return res.status(400).json({ error: 'Date, Mood, et Score sont requis' });
   }
 
   try {
@@ -70,10 +70,10 @@ app.post('/api/moods', async (req, res) => {
 
     if (existingEntryIndex >= 0) {
       // Si l'entrée existe, modifie-la
-      moodData[existingEntryIndex].Moods = Moods;
+      moodData[existingEntryIndex] = { Date, Mood, Score };
     } else {
       // Sinon, ajoute une nouvelle entrée
-      moodData.push({ Date, Moods });
+      moodData.push({ Date, Mood, Score });
     }
 
     // Écris les données mises à jour dans le fichier
@@ -84,7 +84,6 @@ app.post('/api/moods', async (req, res) => {
   }
 });
 
-// Endpoint pour récupérer les humeurs
 app.get('/api/sleep', async (req, res) => {
   try {
     const sleepDataPath = path.join(__dirname, 'public', 'sleeptracker.json');
@@ -116,6 +115,75 @@ app.post('/api/sleep', async (req, res) => {
   } catch (error) {
     console.error('Error updating SleepTracker:', error);
     res.status(500).send({ message: 'Error updating SleepTracker' });
+  }
+});
+
+
+// Server code for handling daily tasks
+
+app.get('/api/daily-tasks', async (req, res) => {
+  try {
+    const data = await fs.readFile(path.join(__dirname, 'public', 'dailytasktracker.json'), 'utf-8');
+    res.json(JSON.parse(data));
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la récupération des données' });
+  }
+});
+
+app.post('/api/daily-tasks', async (req, res) => {
+  const { Date, Tasks } = req.body;
+
+  try {
+    const filePath = path.join(__dirname, 'public', 'dailytasktracker.json');
+    const data = await fs.readFile(filePath, 'utf-8');
+    let taskData = JSON.parse(data);
+
+    const existingEntryIndex = taskData.findIndex(entry => entry.Date === Date);
+    if (existingEntryIndex !== -1) {
+      taskData[existingEntryIndex].Tasks = Tasks;
+    } else {
+      taskData.push({ Date, Tasks });
+    }
+
+    await fs.writeFile(filePath, JSON.stringify(taskData, null, 2));
+    res.status(200).send('dailytasktracker.json mis à jour avec succès');
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour du dailytasktracker:', error);
+    res.status(500).send('Erreur lors de la mise à jour du dailytasktracker');
+  }
+});
+
+// Endpoint pour récupérer les extra tasks
+app.get('/api/extra-tasks', async (req, res) => {
+  try {
+    const data = await fs.readFile(path.join(__dirname, 'public', 'extratasktracker.json'), 'utf-8');
+    res.json(JSON.parse(data));
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la récupération des extra tasks' });
+  }
+});
+
+// Endpoint pour mettre à jour le fichier JSON des extra tasks
+app.post('/api/extra-tasks', async (req, res) => {
+  const { Date, ExtraTasks } = req.body;
+
+  try {
+    const filePath = path.join(__dirname, 'public', 'extratasktracker.json');
+    const data = await fs.readFile(filePath, 'utf-8');
+    let extraTaskData = JSON.parse(data);
+
+    const existingEntryIndex = extraTaskData.findIndex(entry => entry.Date === Date);
+    if (existingEntryIndex !== -1) {
+      extraTaskData[existingEntryIndex].ExtraTasks = ExtraTasks;
+    } else {
+      extraTaskData.push({ Date, ExtraTasks });
+    }
+
+    await fs.writeFile(filePath, JSON.stringify(extraTaskData, null, 2));
+    res.status(200).send('extratasktracker.json mis à jour avec succès');
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour de extratasktracker:', error);
+    res.status(500).send('Erreur lors de la mise à jour de extratasktracker');
   }
 });
 

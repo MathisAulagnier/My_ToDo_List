@@ -5,29 +5,37 @@ const PunctualTask = () => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3001/tasks')
+    fetch('http://localhost:3001/api/extra-tasks')
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         return response.json();
       })
-      .then((data) => setTasks(data))
+      .then((data) => {
+        const currentDate = new Date().toISOString().split('T')[0];
+        const todayTasks = data.find(entry => entry.Date === currentDate);
+        setTasks(todayTasks ? todayTasks.ExtraTasks : []);
+      })
       .catch((error) => console.error('Erreur de chargement des tâches :', error));
   }, []);
 
-  const handleTaskCompletion = (id) => {
-    const updatedTasks = tasks.filter((task) => task.id !== id);
+  const handleTaskCompletion = (task) => {
+    const updatedTasks = tasks.filter((t) => t !== task);
     setTasks(updatedTasks);
 
     updateJsonFile(updatedTasks);
   };
 
   const updateJsonFile = (updatedTasks) => {
-    fetch('http://localhost:3001/tasks', {
+    const currentDate = new Date().toISOString().split('T')[0];
+    fetch('http://localhost:3001/api/extra-tasks', {
       method: 'POST', 
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedTasks),
+      body: JSON.stringify({
+        Date: currentDate,
+        ExtraTasks: updatedTasks
+      }),
     })
     .then(response => {
       if (!response.ok) {
@@ -41,17 +49,16 @@ const PunctualTask = () => {
 
   return (
     <div className="punctual-task neon-green">
-      <h2>Punctual Tasks</h2>
-      {tasks.map((task) => (
-        <div key={task.id} className="task-p-item">
+      <h2>Extra Tasks</h2>
+      {tasks.length > 0 ? tasks.map((task, index) => (
+        <div key={index} className="task-p-item">
           <input
             type="checkbox"
-            checked={task.completed}
-            onChange={() => handleTaskCompletion(task.id)}
+            onChange={() => handleTaskCompletion(task)}
           />
-          {task.text}
+          {task}
         </div>
-      ))}
+      )) : <p>Aucune tâche supplémentaire pour aujourd'hui</p>}
     </div>
   );
 };

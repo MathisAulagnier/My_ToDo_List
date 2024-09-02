@@ -2,18 +2,19 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './MoodTracker.css'; // Import du CSS pour les styles néon
 
 const MoodTracker = () => {
-  const [moods, setMoods] = useState([
-    { id: 1, text: 'Happy', selected: false },
-    { id: 2, text: 'Sad', selected: false },
-    { id: 3, text: 'Excited', selected: false },
-    { id: 4, text: 'Anxious', selected: false },
-    { id: 5, text: 'Relaxed', selected: false },
-    { id: 6, text: 'Tired', selected: false },
-    { id: 7, text: 'Angry', selected: false },
-    { id: 8, text: 'Content', selected: false },
-  ]);
+  const moodOptions = [
+    { id: 1, text: 'Joyeux', score: 2 },
+    { id: 2, text: 'Calme', score: 1 },
+    { id: 3, text: 'Stressé', score: 0.5 },
+    { id: 4, text: 'Normal', score: 0 },
+    { id: 5, text: 'Fatigué', score: -0.5 },
+    { id: 6, text: 'Enervé', score: -1 },
+    { id: 7, text: 'Triste', score: -2 },
+  ];
 
-  const [selectedMood, setSelectedMood] = useState(null);
+  const [moods, setMoods] = useState(moodOptions);
+  const [selectedMood, setSelectedMood] = useState(moodOptions.find(m => m.text === "Normal"));
+  const [dataLoaded, setDataLoaded] = useState(false); // Pour suivre si les données ont été chargées
 
   const formatDate = (date) => {
     const d = new Date(date);
@@ -28,9 +29,11 @@ const MoodTracker = () => {
   };
 
   const selectMood = useCallback((id) => {
-    const selected = moods.find(mood => mood.id === id).text;
+    const selected = moods.find(mood => mood.id === id);
     const updatedMoods = moods.map((mood) =>
-      mood.id === id ? { ...mood, selected: true } : { ...mood, selected: false }
+      mood.id === id
+        ? { ...mood, selected: true }
+        : { ...mood, selected: false }
     );
     setMoods(updatedMoods);
     setSelectedMood(selected);
@@ -39,7 +42,7 @@ const MoodTracker = () => {
   const validateMood = async () => {
     if (!selectedMood) return; // Si aucune humeur n'est sélectionnée, ne rien faire.
 
-    const currentDate = formatDate(new Date()); // Utilise formatDate pour obtenir la bonne date
+    const currentDate = formatDate(new Date());
 
     try {
       const response = await fetch('http://localhost:3001/api/moods', {
@@ -49,7 +52,8 @@ const MoodTracker = () => {
         },
         body: JSON.stringify({
           Date: currentDate,
-          Moods: selectedMood,
+          Mood: selectedMood.text,
+          Score: selectedMood.score
         }),
       });
 
@@ -65,16 +69,39 @@ const MoodTracker = () => {
   };
 
   useEffect(() => {
-    const defaultMoodId = moods.find(mood => mood.text === 'Relaxed').id;
-    const hasSelectedMood = moods.some(mood => mood.selected);
-    if (!hasSelectedMood) {
-      selectMood(defaultMoodId);
+    const fetchMoodData = async () => {
+      const currentDate = formatDate(new Date());
+
+      try {
+        const response = await fetch('http://localhost:3001/api/moods');
+        const data = await response.json();
+
+        const existingMood = data.find(mood => mood.Date === currentDate);
+
+        if (existingMood) {
+          const moodId = moods.find(mood => mood.text === existingMood.Mood).id;
+          selectMood(moodId);
+        } else {
+          const defaultMoodId = moods.find(mood => mood.text === 'Normal').id;
+          selectMood(defaultMoodId);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération des données d\'humeur:', error);
+        const defaultMoodId = moods.find(mood => mood.text === 'Normal').id;
+        selectMood(defaultMoodId);
+      } finally {
+        setDataLoaded(true); // Marque les données comme chargées
+      }
+    };
+
+    if (!dataLoaded) { // Ne pas recharger les données si elles ont déjà été chargées
+      fetchMoodData();
     }
-  }, [moods, selectMood]);
+  }, [moods, selectMood, dataLoaded]);
 
   return (
     <div className="mood-tracker">
-      <h2>How do you feel today?</h2>
+      <h2>Today's Mood</h2>
       {moods.map((mood) => (
         <div key={mood.id} className="mood-item">
           <input

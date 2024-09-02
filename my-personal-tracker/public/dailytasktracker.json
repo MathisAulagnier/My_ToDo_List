@@ -1,18 +1,25 @@
 [
-    {
-        "Date": "2024-08-27",
-        "DailyTrackers": "100 Pompes, Petit déjeuner"
-    },
-    {
-        "Date": "2024-08-28",
-        "DailyTrackers": "100 Pompes, Petit déjeuner"
-    },
-    {
-        "Date": "2024-08-29",
-        "DailyTrackers": "100 Pompes, Petit déjeuner"
-    },
-    {
-        "Date": "2024-08-30",
-        "DailyTrackers": "100 Pompes, Petit déjeuner"
-    }
+  {
+    "Date": "2024-08-30",
+    "Tasks": [
+      "100 Pompes",
+      "Petit déjeuner",
+      "Méditation",
+      "Lecture",
+      "Exercice physique"
+    ]
+  },
+  {
+    "Date": "2024-08-31",
+    "Tasks": [
+      "Méditation",
+      "Lecture"
+    ]
+  },
+  {
+    "Date": "2024-09-01",
+    "Tasks": [
+      "100 Pompes"
+    ]
+  }
 ]
