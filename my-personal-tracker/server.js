@@ -230,6 +230,30 @@ app.post('/api/extra-tasks', async (req, res) => {
   }
 });
 
+// Endpoint pour mettre à jour ou ajouter le score de productivité
+app.post('/api/productivity-score', async (req, res) => {
+  const { Date, TotalScore } = req.body;
+
+  try {
+    const filePath = path.join(__dirname, 'public', 'scoretracker.json');
+    const data = await fs.readFile(filePath, 'utf8');
+    let scoreData = JSON.parse(data);
+
+    const existingEntry = scoreData.find(entry => entry.Date === Date);
+    if (existingEntry) {
+      existingEntry.TotalScore = TotalScore;
+    } else {
+      scoreData.push({ Date, TotalScore });
+    }
+
+    await writeJsonFile(filePath, scoreData);
+    res.status(200).send({ message: 'Score de productivité mis à jour avec succès' });
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour du score de productivité:', error);
+    res.status(500).send({ message: 'Erreur lors de la mise à jour du score de productivité' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur http://localhost:${PORT}`);
 });
