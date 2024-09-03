@@ -1,32 +1,26 @@
 [
   {
-    "Date": "2024-09-02",
+    "Date": "2024-09-03",
     "ExtraTasks": [
       {
-        "id": 1725290583470,
-        "text": "NormalT",
+        "id": 1725364974740,
+        "text": "Ajouter la mise a jour de Mood",
         "completed": true,
         "importance": "moyen"
       },
       {
-        "id": 1725290599736,
-        "text": "FaibleT",
+        "id": 1725364983903,
+        "text": "Ajouter MAJ de sleeptracker",
         "completed": true,
         "importance": "moyen"
       },
       {
-        "id": 1725290605866,
-        "text": "feaferzv",
+        "id": 1725364994042,
+        "text": "Ajouter Maj de tasktracker",
         "completed": true,
-        "importance": "faible"
-      },
-      {
-        "id": 1725290618328,
-        "text": "dxqeac",
-        "completed": true,
-        "importance": "élevé"
+        "importance": "moyen"
       }
     ],
-    "Score": 20
+    "Score": 15
   }
 ]

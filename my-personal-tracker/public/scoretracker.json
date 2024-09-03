@@ -1,0 +1,31 @@
+[
+  {
+    "Date": "2024-08-30",
+    "Mood": -0.5,
+    "Sleep": 5,
+    "Taches quotidiennes": 15,
+    "Extra taches": 32
+  },
+  {
+    "Date": "2024-08-31",
+    "Mood": 2,
+    "Sleep": 0,
+    "Taches quotidiennes": 35,
+    "Extra taches": 0
+  },
+  {
+    "Date": "2024-09-01",
+    "Mood": -1,
+    "Sleep": 3,
+    "Taches quotidiennes": 15,
+    "Extra taches": 12
+  },
+  {
+    "Date": "2024-09-02",
+    "Mood": 0,
+    "Sleep": 0,
+    "TachesQuotidiennes": 0,
+    "ExtraTaches": 0,
+    "totalScore": 0
+  }
+]

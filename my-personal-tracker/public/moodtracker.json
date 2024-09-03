@@ -1,12 +1,12 @@
 [
   {
-    "Date": "2024-09-01",
-    "Mood": "Normal",
-    "Score": 0
+    "Date": "2024-09-02",
+    "Mood": "Calme",
+    "Score": 1
   },
   {
-    "Date": "2024-09-02",
-    "Mood": "Normal",
-    "Score": 0
+    "Date": "2024-09-03",
+    "Mood": "Joyeux",
+    "Score": 2
   }
 ]

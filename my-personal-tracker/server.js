@@ -116,13 +116,14 @@ app.post('/api/sleep', async (req, res) => {
   const sleepScores = {
     "Excellent": 9,
     "Bien": 7,
-    "Normal": 5, // Valeur par défaut
+    "Normal": 5,
     "Trop chaud/froid": 4,
     "Pas assez": 3,
     "Mal": 2,
-    "Nuit blanche": 0,
+    "Nuit blanche": 0
   };
-  const Score = sleepScores[Sleep] || 5;
+  // const Score = sleepScores[Sleep] || 5;
+  const Score = sleepScores[Sleep] !== undefined ? sleepScores[Sleep] : 5;
 
   try {
     const filePath = path.join(__dirname, 'public', 'sleeptracker.json');

@@ -1,32 +1,9 @@
 [
   {
-    "Date": "2024-08-30",
+    "Date": "2024-09-03",
     "Tasks": [
-      "100 Pompes"
-    ],
-    "Score": 5
-  },
-  {
-    "Date": "2024-08-31",
-    "Tasks": [
-      "100 pompes",
-      "Séance de sport",
-      "Prendre des nouvelles"
-    ],
-    "Score": 15
-  },
-  {
-    "Date": "2024-09-01",
-    "Tasks": [
-      "Projet Personnel"
-    ],
-    "Score": 5
-  },
-  {
-    "Date": "2024-09-02",
-    "Tasks": [
-      "100 Pompes",
-      "Prendre des nouvelles"
+      "Projet Personnel",
+      "Echecs"
     ],
     "Score": 10
   }

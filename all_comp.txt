@@ -1,0 +1,925 @@
+----- Contenu de my-personal-tracker/src/components//AddPunctualTask.css -----
+.add-punctual-task {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .add-punctual-task input {
+    padding: 10px;
+    border: 2px solid #00ff00;
+    background-color: #000;
+    color: #00ff00;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
+  }
+  
+  .add-punctual-task button {
+    padding: 10px 20px;
+    background-color: #00ff00;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-punctual-task button:hover {
+    background-color: #00cc00;
+  }
+----- Contenu de my-personal-tracker/src/components//AddPunctualTask.js -----
+import React, { useState } from 'react';
+import './AddPunctualTask.css';
+
+const AddPunctualTask = ({ onTaskAdded }) => {
+  const [newTask, setNewTask] = useState('');
+  const [priority, setPriority] = useState('moyen'); // Priorité par défaut
+
+  const handleAddTask = () => {
+    if (newTask.trim() === '') return;
+
+    const newTaskObj = {
+      id: Date.now(),
+      text: newTask,
+      completed: false,
+      importance: priority, // Ajouter l'importance sélectionnée
+    };
+
+    fetch('http://localhost:3001/tasks', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((response) => response.json())
+      .then((currentTasks) => {
+        const updatedTasks = [...currentTasks, newTaskObj];
+
+        fetch('http://localhost:3001/tasks', {
+          method: 'POST', 
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedTasks),
+        })
+        .then(() => {
+          setNewTask('');
+          setPriority('moyen'); // Réinitialiser la priorité au niveau par défaut
+          onTaskAdded(newTaskObj);
+        })
+        .catch((error) => console.error('Erreur lors de la mise à jour des tâches :', error));
+      })
+      .catch((error) => console.error('Erreur lors de l\'ajout de la tâche :', error));
+  };
+
+  return (
+    <div className="add-punctual-task">
+      <input
+        type="text"
+        value={newTask}
+        onChange={(e) => setNewTask(e.target.value)}
+        placeholder="Add Punctual Task"
+      />
+      <select
+        value={priority}
+        onChange={(e) => setPriority(e.target.value)}
+      >
+        <option value="faible">Faible</option>
+        <option value="moyen">Moyen</option>
+        <option value="élevé">Forte</option>
+      </select>
+      <button onClick={handleAddTask}>Add</button>
+    </div>
+  );
+};
+
+export default AddPunctualTask;
+----- Contenu de my-personal-tracker/src/components//MoodTracker.css -----
+.mood-tracker {
+    background-color: #000;
+    border: 2px solid #0ff; /* Bordure néon */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
+    color: #0ff;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .mood-tracker h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #0ff;
+  }
+  
+  .mood-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #111;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .mood-item:hover {
+    background-color: #222;
+  }
+  
+  .mood-item input {
+    margin-right: 10px;
+    transform: scale(1.5);
+  }
+  
+  .mood-item:hover input {
+    background-color: #0ff;
+  }
+
+  .mood-tracker button {
+    padding: 10px 20px;
+    background-color: #0ff;;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .mood-tracker button:hover {
+    background-color: #006eff;
+  }
+----- Contenu de my-personal-tracker/src/components//MoodTracker.js -----
+import React, { useState, useEffect, useCallback } from 'react';
+import './MoodTracker.css'; // Import du CSS pour les styles néon
+
+const MoodTracker = () => {
+  const moodOptions = [
+    { id: 1, text: 'Joyeux', score: 2 },
+    { id: 2, text: 'Calme', score: 1 },
+    { id: 3, text: 'Stressé', score: 0.5 },
+    { id: 4, text: 'Normal', score: 0 },
+    { id: 5, text: 'Fatigué', score: -0.5 },
+    { id: 6, text: 'Enervé', score: -1 },
+    { id: 7, text: 'Triste', score: -2 },
+  ];
+
+  const [moods, setMoods] = useState(moodOptions);
+  const [selectedMood, setSelectedMood] = useState(moodOptions.find(m => m.text === "Normal"));
+  const [dataLoaded, setDataLoaded] = useState(false); // Pour suivre si les données ont été chargées
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    let day = d.getDate();
+    let month = d.getMonth() + 1;
+    const year = d.getFullYear();
+
+    if (day < 10) day = '0' + day;
+    if (month < 10) month = '0' + month;
+
+    return `${year}-${month}-${day}`; // Format YYYY-MM-DD
+  };
+
+  const selectMood = useCallback((id) => {
+    const selected = moods.find(mood => mood.id === id);
+    const updatedMoods = moods.map((mood) =>
+      mood.id === id
+        ? { ...mood, selected: true }
+        : { ...mood, selected: false }
+    );
+    setMoods(updatedMoods);
+    setSelectedMood(selected);
+  }, [moods]);
+
+  const validateMood = async () => {
+    if (!selectedMood) return; // Si aucune humeur n'est sélectionnée, ne rien faire.
+
+    const currentDate = formatDate(new Date());
+
+    try {
+      const response = await fetch('http://localhost:3001/api/moods', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Date: currentDate,
+          Mood: selectedMood.text,
+          Score: selectedMood.score
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour du MoodTracker');
+      }
+
+      alert('MoodTracker mis à jour avec succès');
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du MoodTracker:', error);
+      alert('Erreur lors de la mise à jour du MoodTracker');
+    }
+  };
+
+  useEffect(() => {
+    const fetchMoodData = async () => {
+      const currentDate = formatDate(new Date());
+
+      try {
+        const response = await fetch('http://localhost:3001/api/moods');
+        const data = await response.json();
+
+        const existingMood = data.find(mood => mood.Date === currentDate);
+
+        if (existingMood) {
+          const moodId = moods.find(mood => mood.text === existingMood.Mood).id;
+          selectMood(moodId);
+        } else {
+          const defaultMoodId = moods.find(mood => mood.text === 'Normal').id;
+          selectMood(defaultMoodId);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération des données d\'humeur:', error);
+        const defaultMoodId = moods.find(mood => mood.text === 'Normal').id;
+        selectMood(defaultMoodId);
+      } finally {
+        setDataLoaded(true); // Marque les données comme chargées
+      }
+    };
+
+    if (!dataLoaded) { // Ne pas recharger les données si elles ont déjà été chargées
+      fetchMoodData();
+    }
+  }, [moods, selectMood, dataLoaded]);
+
+  return (
+    <div className="mood-tracker">
+      <h2>Today's Mood</h2>
+      {moods.map((mood) => (
+        <div key={mood.id} className="mood-item">
+          <input
+            type="checkbox"
+            checked={mood.selected}
+            onChange={() => selectMood(mood.id)}
+          />
+          {mood.text}
+        </div>
+      ))}
+      <button onClick={validateMood}>Valider</button>
+    </div>
+  );
+};
+
+export default MoodTracker;
+----- Contenu de my-personal-tracker/src/components//ProductivityChart.js -----
+import React, { useState, useEffect } from 'react';
+import { Line } from 'react-chartjs-2';
+import 'chart.js/auto'; // Importer Chart.js auto pour react-chartjs-2
+
+const ProductivityChart = () => {
+  const [chartData, setChartData] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const today = new Date();
+      const dates = Array.from({ length: 30 }, (_, i) => {
+        const date = new Date();
+        date.setDate(today.getDate() - i);
+        return date.toISOString().split('T')[0];
+      }).reverse(); // Liste des 30 derniers jours
+
+      const moodResponse = await fetch('http://localhost:3001/api/moods');
+      const moodData = await moodResponse.json();
+
+      const sleepResponse = await fetch('http://localhost:3001/api/sleep');
+      const sleepData = await sleepResponse.json();
+
+      const dailyTaskResponse = await fetch('http://localhost:3001/api/daily-tasks');
+      const dailyTaskData = await dailyTaskResponse.json();
+
+      const extraTaskResponse = await fetch('http://localhost:3001/api/extra-tasks');
+      const extraTaskData = await extraTaskResponse.json();
+
+      const scores = dates.map(date => {
+        const moodScore = moodData.find(entry => entry.Date === date)?.Score || 0;
+        const sleepScore = sleepData.find(entry => entry.Date === date)?.Score || 0;
+        const dailyTaskScore = dailyTaskData.find(entry => entry.Date === date)?.Score || 0;
+        const extraTaskScore = extraTaskData.find(entry => entry.Date === date)?.Score || 0;
+        return moodScore + sleepScore + dailyTaskScore + extraTaskScore;
+      });
+
+      setChartData({
+        labels: dates,
+        datasets: [
+          {
+            label: 'Score de productivité sur 30 jours',
+            data: scores,
+            fill: false,
+            borderColor: 'rgba(75,192,192,1)',
+            backgroundColor: 'rgba(75,192,192,0.4)',
+            tension: 0.1,
+          }
+        ]
+      });
+    };
+
+    fetchData();
+  }, []);
+
+  return (
+    <div>
+      <h2>Productivity Over Last 30 Days</h2>
+      <Line data={chartData} />
+    </div>
+  );
+};
+
+export default ProductivityChart;
+----- Contenu de my-personal-tracker/src/components//ProductivityScore.css -----
+.productivity-score {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+  }
+  
+  .score-ticket {
+    text-align: left;
+  }
+  
+  .score-ticket p {
+    margin: 0 0 10px;
+    font-size: 16px;
+  }
+  
+  .score-ticket hr {
+    border: 0;
+    border-top: 1px solid #000;
+    margin: 10px 0;
+  }
+----- Contenu de my-personal-tracker/src/components//ProductivityScore.js -----
+import React, { useState, useEffect } from 'react';
+import './ProductivityScore.css';
+
+const ProductivityScore = () => {
+  const [moodScore, setMoodScore] = useState(0);
+  const [sleepScore, setSleepScore] = useState(0);
+  const [dailyTaskScore, setDailyTaskScore] = useState(0);
+  const [extraTaskScore, setExtraTaskScore] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
+
+  useEffect(() => {
+    const fetchMoodScore = async () => {
+      const response = await fetch('http://localhost:3001/api/moods');
+      const data = await response.json();
+      const today = new Date().toISOString().split('T')[0];
+      const todayMood = data.find(entry => entry.Date === today);
+      setMoodScore(todayMood ? todayMood.Score : 0);
+    };
+
+    const fetchSleepScore = async () => {
+      const response = await fetch('http://localhost:3001/api/sleep');
+      const data = await response.json();
+      const today = new Date().toISOString().split('T')[0];
+      const todaySleep = data.find(entry => entry.Date === today);
+      setSleepScore(todaySleep ? todaySleep.Score : 0);
+    };
+
+    const fetchDailyTaskScore = async () => {
+      const response = await fetch('http://localhost:3001/api/daily-tasks');
+      const data = await response.json();
+      const today = new Date().toISOString().split('T')[0];
+      const todayTasks = data.find(entry => entry.Date === today);
+      setDailyTaskScore(todayTasks ? todayTasks.Score : 0);
+    };
+
+    const fetchExtraTaskScore = async () => {
+      const response = await fetch('http://localhost:3001/api/extra-tasks');
+      const data = await response.json();
+      const today = new Date().toISOString().split('T')[0];
+      const todayExtraTasks = data.find(entry => entry.Date === today);
+      setExtraTaskScore(todayExtraTasks ? todayExtraTasks.Score : 0);
+    };
+
+    const calculateTotalScore = () => {
+      setTotalScore(moodScore + sleepScore + dailyTaskScore + extraTaskScore);
+    };
+
+    fetchMoodScore();
+    fetchSleepScore();
+    fetchDailyTaskScore();
+    fetchExtraTaskScore();
+    calculateTotalScore();
+  }, [moodScore, sleepScore, dailyTaskScore, extraTaskScore]);
+
+  return (
+    <div className="productivity-score">
+      <h2>Productivity Score</h2>
+      <div className="score-ticket">
+        <p>Mood : {moodScore}</p>
+        <p>Sleep : {sleepScore}</p>
+        <p>Taches quotidiennes : {dailyTaskScore}</p>
+        <p>Extra taches : {extraTaskScore}</p>
+        <hr />
+        <p>Score de productivité : {totalScore}</p>
+      </div>
+    </div>
+  );
+};
+
+export default ProductivityScore;
+----- Contenu de my-personal-tracker/src/components//PunctualTask.css -----
+.punctual-task {
+    background-color: #000;
+    border: 2px solid #00ff00; /* Bordure néon verte */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
+    color: #00ff00;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .punctual-task h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #00ff00;
+  }
+  
+  .task-p-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #111;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
+    transition: background-color 0.3s ease;
+  }
+  
+  .task-p-item:hover {
+    background-color: #222;
+  }
+  
+  .task-p-item input {
+    margin-right: 10px;
+    transform: scale(1.5);
+  }
+  
+  .task-p-item:hover input {
+    background-color: #00ff00;
+  }
+----- Contenu de my-personal-tracker/src/components//PunctualTask.js -----
+import React, { useState, useEffect } from 'react';
+import './PunctualTask.css';
+
+const PunctualTask = () => {
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    // Charger les tâches ponctuelles à partir du serveur
+    fetch('http://localhost:3001/tasks')
+      .then((response) => response.json())
+      .then((data) => {
+        setTasks(data || []); // Charger les tâches ou un tableau vide si aucune tâche n'existe
+      })
+      .catch((error) => console.error('Erreur de chargement des tâches ponctuelles :', error));
+  }, []);
+
+  const handleTaskCompletion = (task) => {
+    // Supprimer la tâche accomplie de la liste des tâches ponctuelles
+    const updatedTasks = tasks.filter((t) => t.id !== task.id);
+    setTasks(updatedTasks);
+
+    // Mettre à jour punctualTasks.json avec les tâches restantes
+    fetch('http://localhost:3001/tasks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedTasks),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to update tasks');
+      }
+      return response.text();
+    })
+    .then(() => console.log('Mise à jour des tâches ponctuelles réussie'))
+    .catch((error) => console.error('Erreur lors de la mise à jour des tâches ponctuelles :', error));
+
+    // Enregistrer la tâche accomplie dans extraTaskTracker.json avec la date actuelle
+    const currentDate = new Date().toISOString().split('T')[0];
+    fetch('http://localhost:3001/api/extra-tasks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        Date: currentDate,
+        ExtraTasks: [{ ...task, completed: true, importance: task.importance || 'moyen' }],
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to log completed task');
+      }
+      return response.text();
+    })
+    .then(() => console.log('Tâche accomplie enregistrée avec succès'))
+    .catch((error) => console.error('Erreur lors de l\'enregistrement de la tâche accomplie :', error));
+  };
+
+  return (
+    <div className="punctual-task neon-green">
+      <h2>Extra Tasks</h2>
+      {tasks.length > 0 ? tasks.map((task) => (
+        <div key={task.id} className="task-p-item">
+          <input
+            type="checkbox"
+            onChange={() => handleTaskCompletion(task)}
+          />
+          {task.text}
+        </div>
+      )) : <p>Aucune tâche ponctuelle pour aujourd'hui</p>}
+    </div>
+  );
+};
+
+export default PunctualTask;
+----- Contenu de my-personal-tracker/src/components//SleepTracker.css -----
+.sleep-tracker {
+    background-color: #000;
+    border: 2px solid #0ff; /* Bordure néon */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
+    color: #0ff;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .sleep-tracker h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #0ff;
+  }
+  
+  .sleep-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #111;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sleep-item:hover {
+    background-color: #222;
+  }
+  
+  .sleep-item input {
+    margin-right: 10px;
+    transform: scale(1.5);
+  }
+  
+  .sleep-item:hover input {
+    background-color: #0ff;
+  }
+
+  .sleep-tracker button {
+    padding: 10px 20px;
+    background-color: #0ff;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sleep-tracker button:hover {
+    background-color: #006eff;
+  }
+----- Contenu de my-personal-tracker/src/components//SleepTracker.js -----
+import React, { useState, useEffect, useCallback } from 'react';
+import './SleepTracker.css'; // Import du CSS pour les styles néon
+
+const SleepTracker = () => {
+  const [sleepQuality, setSleepQuality] = useState([
+    { id: 1, text: 'Excellent', selected: false },
+    { id: 2, text: 'Bien', selected: false },
+    { id: 3, text: 'Normal', selected: false },
+    { id: 4, text: 'Trop chaud/froid', selected: false },
+    { id: 5, text: 'Pas assez', selected: false },
+    { id: 6, text: 'Mal', selected: false },
+    { id: 7, text: 'Nuit blanche', selected: false },
+  ]);
+
+  const [selectedSleep, setSelectedSleep] = useState(null);
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  const sleepScores = {
+    'Excellent': 9,
+    'Bien': 7,
+    'Normal': 5,
+    'Trop chaud/froid': 4,
+    'Pas assez': 3,
+    'Mal': 2,
+    'Nuit blanche': 0,
+  };
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    let day = d.getDate();
+    let month = d.getMonth() + 1;
+    const year = d.getFullYear();
+
+    if (day < 10) day = '0' + day;
+    if (month < 10) month = '0' + month;
+
+    return `${year}-${month}-${day}`; // Format YYYY-MM-DD
+  };
+
+  const selectSleepQuality = useCallback((id) => {
+    const selected = sleepQuality.find(sleep => sleep.id === id).text;
+    const updatedSleepQuality = sleepQuality.map((sleep) =>
+      sleep.id === id
+        ? { ...sleep, selected: true }
+        : { ...sleep, selected: false }
+    );
+    setSleepQuality(updatedSleepQuality);
+    setSelectedSleep(selected);
+  }, [sleepQuality]);
+
+  const validateSleepQuality = async () => {
+    if (!selectedSleep) return; // Si aucune qualité de sommeil n'est sélectionnée, ne rien faire.
+
+    const currentDate = formatDate(new Date());
+    const score = sleepScores[selectedSleep];
+
+    try {
+      const response = await fetch('http://localhost:3001/api/sleep', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Date: currentDate,
+          Sleep: selectedSleep,
+          Score: score,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour du SleepTracker');
+      }
+
+      alert('SleepTracker mis à jour avec succès');
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du SleepTracker:', error);
+      alert('Erreur lors de la mise à jour du SleepTracker');
+    }
+  };
+
+  useEffect(() => {
+    const fetchSleepData = async () => {
+      const currentDate = formatDate(new Date());
+
+      try {
+        const response = await fetch('http://localhost:3001/api/sleep');
+        const data = await response.json();
+
+        const existingSleep = data.find(sleep => sleep.Date === currentDate);
+
+        if (existingSleep) {
+          const sleepId = sleepQuality.find(sleep => sleep.text === existingSleep.Sleep).id;
+          selectSleepQuality(sleepId);
+        } else {
+          const defaultSleepId = sleepQuality.find(sleep => sleep.text === 'Normal').id;
+          selectSleepQuality(defaultSleepId);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération des données de sommeil:', error);
+        const defaultSleepId = sleepQuality.find(sleep => sleep.text === 'Normal').id;
+        selectSleepQuality(defaultSleepId);
+      } finally {
+        setDataLoaded(true);
+      }
+    };
+
+    if (!dataLoaded) {
+      fetchSleepData();
+    }
+  }, [sleepQuality, selectSleepQuality, dataLoaded]);
+
+  return (
+    <div className="sleep-tracker">
+      <h2>Sleep Quality</h2>
+      {sleepQuality.map((sleep) => (
+        <div key={sleep.id} className="sleep-item">
+          <input
+            type="checkbox"
+            checked={sleep.selected}
+            onChange={() => selectSleepQuality(sleep.id)}
+          />
+          {sleep.text}
+        </div>
+      ))}
+      <button onClick={validateSleepQuality}>Valider</button>
+    </div>
+  );
+};
+
+export default SleepTracker;
+----- Contenu de my-personal-tracker/src/components//TaskTracker.css -----
+.task-tracker {
+    background-color: #000;
+    border: 2px solid #ff00ff; /* Bordure néon rose */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+    color: #ff00ff;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .task-tracker h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #ff00ff;
+  }
+  
+  .task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #111;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .task-item:hover {
+    background-color: #222;
+  }
+  
+  .task-item input {
+    margin-right: 10px;
+    transform: scale(1.5);
+  }
+  
+  .task-item:hover input {
+    background-color: #ff00ff;
+  }
+
+  .task-tracker button {
+    padding: 10px 20px;
+    background-color: #ff00ff;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .task-tracker button:hover {
+    background-color: #c300ff;
+  }
+----- Contenu de my-personal-tracker/src/components//TaskTracker.js -----
+import React, { useState, useEffect, useCallback } from 'react';
+import './TaskTracker.css'; // Import du CSS pour les styles néon
+
+const taskPoints = {
+  '100 Pompes': 5,
+  'Séance de sport': 5,
+  'Prendre des nouvelles': 5,
+  'Etudier': 5,
+  'Projet Personnel': 5,
+  'Manger équilibré': 5,
+  'Lire 30min': 5,
+  'Echecs': 5,
+  'Temps d\'écran < 3 heures': 5,
+  'Apprendre quelque chose de nouveau': 5,
+};
+
+const TaskTracker = () => {
+  const [tasks, setTasks] = useState([
+    { id: 1, text: '100 Pompes', completed: false },
+    { id: 2, text: 'Séance de sport', completed: false },
+    { id: 3, text: 'Prendre des nouvelles', completed: false },
+    { id: 4, text: 'Etudier', completed: false },
+    { id: 5, text: 'Projet Personnel', completed: false },
+    { id: 6, text: 'Manger équilibré', completed: false },
+    { id: 7, text: 'Lire 30min', completed: false },
+    { id: 8, text: 'Echecs', completed: false },
+    { id: 9, text: 'Temps d\'écran < 3 heures', completed: false },
+    { id: 10, text: 'Apprendre quelque chose de nouveau', completed: false },
+  ]);
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    let day = d.getDate();
+    let month = d.getMonth() + 1;
+    const year = d.getFullYear();
+
+    if (day < 10) day = '0' + day;
+    if (month < 10) month = '0' + month;
+
+    return `${year}-${month}-${day}`;
+  };
+
+  const toggleTask = useCallback((id) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? { ...task, completed: !task.completed } : task
+    );
+    setTasks(updatedTasks);
+  }, [tasks]);
+
+  const validateTasks = async () => {
+    const completedTasks = tasks.filter(task => task.completed).map(task => task.text);
+    const currentDate = formatDate(new Date());
+    const score = completedTasks.reduce((acc, task) => acc + (taskPoints[task] || 0), 0);
+
+    try {
+      const response = await fetch('http://localhost:3001/api/daily-tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Date: currentDate,
+          Tasks: completedTasks,
+          Score: score,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour du DailyTaskTracker');
+      }
+
+      alert('DailyTaskTracker mis à jour avec succès');
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du DailyTaskTracker:', error);
+      alert('Erreur lors de la mise à jour du DailyTaskTracker');
+    }
+  };
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const currentDate = formatDate(new Date());
+
+      try {
+        const response = await fetch('http://localhost:3001/api/daily-tasks');
+        const data = await response.json();
+
+        if (Array.isArray(data)) {
+          const todaysTasks = data.find(entry => entry.Date === currentDate);
+          if (todaysTasks) {
+            const updatedTasks = tasks.map(task => ({
+              ...task,
+              completed: todaysTasks.Tasks.includes(task.text),
+            }));
+            setTasks(updatedTasks);
+          }
+        } else {
+          console.warn('Les données reçues ne sont pas au format attendu.');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération des tâches:', error);
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
+  return (
+    <div className="task-tracker">
+      <h2>Daily To Do</h2>
+      {tasks.map((task) => (
+        <div key={task.id} className="task-item">
+          <input
+            type="checkbox"
+            checked={task.completed}
+            onChange={() => toggleTask(task.id)}
+          />
+          {task.text}
+        </div>
+      ))}
+      <button onClick={validateTasks}>Valider</button>
+    </div>
+  );
+};
+
+export default TaskTracker;
