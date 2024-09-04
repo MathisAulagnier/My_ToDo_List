@@ -1,57 +1,29 @@
 .App {
   display: grid;
   grid-template-areas:
-    "calendar calendar score"
-    "punctual-task add-punctual-task graph"
-    "mood sleep daily-task";
+    "score daily-task mood sleep "
+    "score graph graph graph";
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 10px;
-  padding: 20px;
-}
-
-.calendar-section {
-  grid-area: calendar;
-  background-color: #f0f0f0;
-  border-radius: 10px;
   padding: 20px;
 }
 
 .score-section {
   grid-area: score;
-  background-color: #f0f0f0;
-  border-radius: 10px;
-  padding: 20px;
 }
 
-.punctual-task-section {
-  grid-area: punctual-task;
-  background-color: #f0f0f0;
-  border-radius: 10px;
-  padding: 20px;
+.score-item {
+  margin-bottom: 20px; /* Ajustez cette valeur selon vos besoins */
 }
 
-.add-punctual-task-section {
-  grid-area: add-punctual-task;
-  background-color: #f0f0f0;
-  border-radius: 10px;
-  padding: 20px;
-}
-
-.mood-section {
-  grid-area: mood;
-  background-color: #f0f0f0;
-  border-radius: 10px;
-  padding: 20px;
-}
-
-.sleep-section {
-  grid-area: sleep;
-  background-color: #f0f0f0;
-  border-radius: 10px;
-  padding: 20px;
-}
-
-.daily-task-section {
-  grid-area: daily-task;
+.calendar-section,
+.score-section,
+.punctual-task-section,
+.add-punctual-task-section,
+.mood-section,
+.sleep-section,
+.daily-task-section,
+.graph-section {
   background-color: #f0f0f0;
   border-radius: 10px;
   padding: 20px;
@@ -59,12 +31,11 @@
 
 .graph-section {
   grid-area: graph;
-  background-color: #f0f0f0;
-  border-radius: 10px;
-  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  flex-grow: 1;
 }
 
 .toggle-chart-btn {
@@ -82,20 +53,8 @@
   background-color: #0056b3;
 }
 
-.calendar-placeholder {
-  width: 100%;
-  height: 150px;
-  background-color: #ddd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  font-size: 18px;
-  color: #555;
-}
 
-/* Reducing the size of the chart */
 .graph-section canvas {
-  max-width: 100%;
-  max-height: 200px;
+  width: 95% !important;
+  height: auto !important;
 }

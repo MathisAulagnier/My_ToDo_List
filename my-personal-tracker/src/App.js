@@ -22,25 +22,21 @@ function App() {
 
   return (
     <div className="App">
-      {/* Section Productivity Score */}
       <div className="score-section">
-        <ProductivityScore />
+        <div className="score-item">
+          <ProductivityScore />
+        </div>
+        <div className="score-item">
+          <PunctualTask tasks={tasks} setTasks={setTasks} />
+        </div>
+        <div className="score-item">
+          <AddPunctualTask onTaskAdded={handleTaskAdded} />
+        </div>
       </div>
-
-      {/* Section Calendar */}
-      <div className="calendar-section">
-        {/* Placeholder for the calendar */}
-        <div className="calendar-placeholder">Calendar Placeholder</div>
-      </div>
-
-      {/* Section Punctual Task */}
-      <div className="punctual-task-section">
-        <PunctualTask tasks={tasks} setTasks={setTasks} />
-      </div>
-
-      {/* Section Add Punctual Task */}
-      <div className="add-punctual-task-section">
-        <AddPunctualTask onTaskAdded={handleTaskAdded} />
+      
+      {/* Section Daily Task */}
+      <div className="daily-task-section">
+        <TaskTracker />
       </div>
 
       {/* Section Mood Tracker */}
@@ -53,17 +49,9 @@ function App() {
         <SleepTracker />
       </div>
 
-      {/* Section Daily Task */}
-      <div className="daily-task-section">
-        <TaskTracker />
-      </div>
-
       {/* Section Graph */}
       <div className="graph-section">
-        <button className="toggle-chart-btn" onClick={toggleChart}>
-          {showChart ? 'Hide Graph' : 'Show Graph'}
-        </button>
-        {showChart && <ProductivityChart />}
+        <ProductivityChart />
       </div>
     </div>
   );

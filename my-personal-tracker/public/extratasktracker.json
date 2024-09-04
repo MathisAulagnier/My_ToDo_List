@@ -27,24 +27,30 @@
     "Date": "2024-09-04",
     "ExtraTasks": [
       {
-        "id": 1725411266356,
-        "text": "knoki",
-        "completed": true,
-        "importance": "faible"
-      },
-      {
-        "id": 1725411256413,
-        "text": "JJ fuck me",
-        "completed": true,
-        "importance": "élevé"
-      },
-      {
         "id": 1725464465224,
         "text": "Mettre mon attestation d'arrivé",
         "completed": true,
         "importance": "élevé"
+      },
+      {
+        "id": 1725464849128,
+        "text": "Ecrire une carte postal",
+        "completed": true,
+        "importance": "moyen"
+      },
+      {
+        "id": 1725474450966,
+        "text": "Répondre et envoyer mail ",
+        "completed": true,
+        "importance": "faible"
+      },
+      {
+        "id": 1725473473942,
+        "text": "Mettre a jour le contrat pédagogique",
+        "completed": true,
+        "importance": "moyen"
       }
     ],
-    "Score": 17
+    "Score": 20
   }
 ]
