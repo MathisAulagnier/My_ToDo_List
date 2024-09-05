@@ -1,48 +1,76 @@
+/* App.css */
 .App {
   display: grid;
   grid-template-areas:
-    "score daily-task mood sleep "
+    "score daily-task mood sleep"
     "score graph graph graph";
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 10px;
   padding: 20px;
-  background-color: #ffffff;
+  background-color: #00ccff; /* Light grey background for contrast */
 }
 
-.score-section {
-  grid-area: score;
-}
-
-.score-item {
-  margin-bottom: 20px; /* Ajustez cette valeur selon vos besoins */
-}
-
-.calendar-section,
 .score-section,
-.punctual-task-section,
-.add-punctual-task-section,
+.daily-task-section,
 .mood-section,
 .sleep-section,
-.daily-task-section,
 .graph-section {
   background-color: #ffffff;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: box-shadow 0.3s ease;
 }
 
+.score-section:hover,
+.daily-task-section:hover,
+.mood-section:hover,
+.sleep-section:hover,
+.graph-section:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Slightly deeper shadow on hover */
+}
+
+h2 {
+  font-size: 1.8em;
+  color: #333333; /* Dark text for contrast */
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+button {
+  background-color: #00ccff; /* Futuristic light blue */
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1.1em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background-color: #0099cc;
+  transform: scale(1.05);
+}
+
+/* Graph Section */
 .graph-section {
   grid-area: graph;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-grow: 1;
+}
+
+.graph-section canvas {
+  width: 95% !important;
+  height: auto !important;
 }
 
 .toggle-chart-btn {
   margin-bottom: 10px;
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #00ccff;
   color: white;
   border: none;
   border-radius: 5px;
@@ -51,11 +79,18 @@
 }
 
 .toggle-chart-btn:hover {
-  background-color: #0056b3;
+  background-color: #0099cc;
 }
 
+.score-section {
+  grid-area: score;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Adds space between each item */
+  padding: 5px; /* Optional: adds padding inside the container */
+}
 
-.graph-section canvas {
-  width: 95% !important;
-  height: auto !important;
+.score-item {
+  padding: 10px; /* Adds padding inside each item */
+  margin-bottom: 5px; /* Adds space at the bottom of each item */
 }

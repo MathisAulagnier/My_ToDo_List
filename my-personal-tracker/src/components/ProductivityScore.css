@@ -1,24 +1,45 @@
+/* ProductivityScore.css */
 .productivity-score {
-    width: 300px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f8f8f8;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-family: 'Courier New', Courier, monospace;
-  }
-  
-  .score-ticket {
-    text-align: left;
-  }
-  
-  .score-ticket p {
-    margin: 0 0 10px;
-    font-size: 16px;
-  }
-  
-  .score-ticket hr {
-    border: 0;
-    border-top: 1px solid #000;
-    margin: 10px 0;
-  }
+  background-color: #ffffff; /* Light background */
+  border-radius: 12px;
+  padding: 20px;
+  color: #333333; /* Dark text */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: box-shadow 0.3s ease;
+}
+
+.productivity-score:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+}
+
+.productivity-score h2 {
+  font-size: 1.8em;
+  color: #00ccff; /* Futuristic light blue */
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.score-ticket {
+  background-color: #f4f4f4; /* Slightly lighter background for the ticket */
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 10px rgba(0, 204, 255, 0.1); /* Subtle light blue glow */
+}
+
+.score-ticket p {
+  font-size: 1.2em;
+  margin: 8px 0;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background-color: #00ccff; /* Light blue line */
+  margin: 15px 0;
+}
+
+.productivity-score p:last-of-type {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #00ccff; /* Highlight total score */
+}

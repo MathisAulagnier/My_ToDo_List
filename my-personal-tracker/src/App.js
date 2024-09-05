@@ -23,15 +23,15 @@ function App() {
   return (
     <div className="App">
       <div className="score-section">
-        <div className="score-item">
-          <ProductivityScore />
-        </div>
-        <div className="score-item">
-          <PunctualTask tasks={tasks} setTasks={setTasks} />
-        </div>
-        <div className="score-item">
-          <AddPunctualTask onTaskAdded={handleTaskAdded} />
-        </div>
+      <div className="score-item">
+        <ProductivityScore />
+      </div>
+      <div className="score-item">
+        <PunctualTask tasks={tasks} setTasks={setTasks} />
+      </div>
+      <div className="score-item">
+        <AddPunctualTask onTaskAdded={handleTaskAdded} />
+      </div>
       </div>
       
       {/* Section Daily Task */}

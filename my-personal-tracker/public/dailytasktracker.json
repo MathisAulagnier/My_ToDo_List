@@ -22,5 +22,15 @@
       "Apprendre quelque chose de nouveau"
     ],
     "Score": 35
+  },
+  {
+    "Date": "2024-09-05",
+    "Tasks": [
+      "100 Pompes",
+      "Séance de sport",
+      "Manger équilibré",
+      "Echecs"
+    ],
+    "Score": 20
   }
 ]

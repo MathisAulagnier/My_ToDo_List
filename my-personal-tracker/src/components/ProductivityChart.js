@@ -10,6 +10,8 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2'; // Gardez cette ligne si vous avez supprimé une autre importation de Line
+import './ProductivityChart.css';
+
 
 // Enregistrer les échelles
 ChartJS.register(

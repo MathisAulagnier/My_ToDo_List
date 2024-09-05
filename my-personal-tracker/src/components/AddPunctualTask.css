@@ -1,32 +1,57 @@
+/* AddPunctualTask.css */
 .add-punctual-task {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-  
-  .add-punctual-task input {
-    padding: 10px;
-    border: 2px solid #00ff00;
-    background-color: #000;
-    color: #00ff00;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
-  }
-  
-  .add-punctual-task button {
-    padding: 10px 20px;
-    background-color: #00ff00;
-    color: #000;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
-    transition: background-color 0.3s ease;
-  }
-  
-  .add-punctual-task button:hover {
-    background-color: #00cc00;
-  }
+  background-color: #ffffff; /* Light background */
+  border-radius: 12px;
+  padding: 20px;
+  color: #333333; /* Dark text */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: box-shadow 0.3s ease;
+
+  /* Centering the component */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 400px; /* Optional: limit the width */
+  margin: 0 auto; /* Center horizontally */
+}
+
+.add-punctual-task:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+}
+
+.add-punctual-task input[type="text"], 
+.add-punctual-task select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #00ccff; /* Light blue border */
+  border-radius: 8px;
+  font-size: 1.1em;
+  color: #333333;
+  background-color: #f4f4f4;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-punctual-task input[type="text"]:focus,
+.add-punctual-task select:focus {
+  border-color: #0099cc; /* Darker blue on focus */
+  box-shadow: 0 0 5px rgba(0, 153, 204, 0.5); /* Subtle glow on focus */
+}
+
+.add-punctual-task button {
+  background-color: #00ccff;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1.1em;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 100%;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.add-punctual-task button:hover {
+  background-color: #0099cc;
+  transform: scale(1.05);
+}

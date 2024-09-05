@@ -10,5 +10,11 @@
     "text": "Lire les articles de BI",
     "completed": false,
     "importance": "moyen"
+  },
+  {
+    "id": 1725558651846,
+    "text": "Modifier le CSS de l'application ",
+    "completed": false,
+    "importance": "élevé"
   }
 ]
