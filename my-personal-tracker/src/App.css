@@ -94,3 +94,11 @@ button:hover {
   padding: 10px; /* Adds padding inside each item */
   margin-bottom: 5px; /* Adds space at the bottom of each item */
 }
+
+.punctual-task-section {
+  grid-area: daily-task;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 5px;
+}

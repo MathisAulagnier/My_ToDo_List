@@ -27,11 +27,13 @@ function App() {
         <ProductivityScore />
       </div>
       <div className="score-item">
-        <PunctualTask tasks={tasks} setTasks={setTasks} />
-      </div>
-      <div className="score-item">
-        <AddPunctualTask onTaskAdded={handleTaskAdded} />
-      </div>
+          <div className="punctual-task-section">
+            <PunctualTask tasks={tasks} setTasks={setTasks} />
+          </div>
+          <div className="punctual-task-section">
+            <AddPunctualTask onTaskAdded={handleTaskAdded} />
+          </div>
+        </div>
       </div>
       
       {/* Section Daily Task */}
