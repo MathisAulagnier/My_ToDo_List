@@ -10,15 +10,12 @@ import ProductivityChart from './components/ProductivityChart';
 
 function App() {
   const [tasks, setTasks] = useState([]);
-  const [showChart, setShowChart] = useState(false);
+
 
   const handleTaskAdded = (newTask) => {
     setTasks([...tasks, newTask]);
   };
 
-  const toggleChart = () => {
-    setShowChart(!showChart);
-  };
 
   return (
     <div className="App">
