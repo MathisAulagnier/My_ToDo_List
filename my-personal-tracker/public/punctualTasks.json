@@ -1,20 +1,20 @@
 [
   {
-    "id": 1725465863377,
-    "text": "Acheter des timbres",
-    "completed": false,
-    "importance": "moyen"
-  },
-  {
     "id": 1725491659956,
     "text": "Lire les articles de BI",
     "completed": false,
     "importance": "moyen"
   },
   {
-    "id": 1725558651846,
-    "text": "Modifier le CSS de l'application ",
+    "id": 1725585369358,
+    "text": "Poster la lettre",
     "completed": false,
-    "importance": "élevé"
+    "importance": "faible"
+  },
+  {
+    "id": 1725585427576,
+    "text": "Déposer les documents du profs",
+    "completed": false,
+    "importance": "faible"
   }
 ]
