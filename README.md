@@ -1,34 +1,34 @@
-# Productivity ToDo List Application [French App]
+# Application de Liste de Tâches Productive
 
-## Overview
+## Aperçu
 
-The **Productivity ToDo List Application** is designed to help users enhance their productivity by tracking their personal goals and daily habits. The app allows users to:
+L'**Application de Liste de Tâches Productive** est conçue pour aider les utilisateurs à améliorer leur productivité en suivant leurs objectifs personnels et leurs habitudes quotidiennes. L'application permet aux utilisateurs de :
 
-- Track their sleep and mood.
-- Maintain a list of daily tasks aimed at improving productivity.
-- Add punctual tasks with assigned priority levels.
-- Earn points for each completed task to monitor productivity over time through a dynamic score.
+- Suivre la qualité de leur sommeil et leur humeur.
+- Maintenir une liste de tâches quotidiennes pour améliorer la productivité.
+- Ajouter des tâches ponctuelles avec des niveaux de priorité assignés.
+- Gagner des points pour chaque tâche complétée afin de suivre la productivité dans le temps via un score dynamique.
 
-## Features
+## Fonctionnalités
 
-1. **Sleep Tracker**:  
-   Monitor sleep quality by selecting from predefined sleep categories. These choices are saved and tracked over time to ensure consistency in your sleeping habits.
+1. **Suivi du Sommeil** :  
+   Surveillez la qualité de votre sommeil en sélectionnant des catégories prédéfinies. Ces choix sont enregistrés et suivis dans le temps pour assurer une cohérence dans vos habitudes de sommeil.
 
-2. **Mood Tracker**:  
-   Track your daily mood from various options (e.g., Heureux, Calme, Normal, etc.), allowing you to reflect on your emotional state over time.
+2. **Suivi de l'Humeur** :  
+   Suivez votre humeur quotidienne à partir de plusieurs options (par exemple, Heureux, Calme, Normal, etc.), ce qui vous permet de réfléchir à votre état émotionnel au fil du temps.
 
-3. **Daily To-Do List**:  
-   The app offers a customizable list of daily tasks designed to enhance your productivity. Each task contributes to your overall score. Users can modify this list by adding or removing tasks directly within the `TaskTracker` component.
+3. **Liste de Tâches Quotidiennes** :  
+   L'application propose une liste personnalisable de tâches quotidiennes conçue pour améliorer votre productivité. Chaque tâche contribue à votre score global. Les utilisateurs peuvent modifier cette liste en ajoutant ou supprimant des tâches directement dans le composant `TaskTracker`.
 
-4. **Extra Task Feature**:  
-   Add punctual tasks that need immediate attention. You can assign priorities to these tasks to focus on the most critical ones.
+4. **Fonctionnalité de Tâches Supplémentaires** :  
+   Ajoutez des tâches ponctuelles nécessitant une attention immédiate. Vous pouvez attribuer des priorités à ces tâches pour vous concentrer sur les plus critiques.
 
-5. **Productivity Score**:  
-   Every completed task (daily, sleep, mood, extra tasks) contributes to your daily productivity score, allowing you to track and improve your efficiency over time.
+5. **Score de Productivité** :  
+   Chaque tâche complétée (quotidienne, sommeil, humeur, tâches supplémentaires) contribue à votre score de productivité quotidien, vous permettant de suivre et d'améliorer votre efficacité dans le temps.
 
-## Task Customization
+## Personnalisation des Tâches
 
-Users have the ability to customize their daily tasks by adding, removing, or modifying tasks within the `TaskTracker` component. The tasks are defined and updated using the following code:
+Les utilisateurs ont la possibilité de personnaliser leurs tâches quotidiennes en ajoutant, supprimant ou modifiant des tâches dans le composant `TaskTracker`. Les tâches sont définies et mises à jour en utilisant le code suivant :
 
 ```javascript
 import React, { useState, useEffect, useCallback } from 'react';
@@ -62,53 +62,61 @@ const TaskTracker = () => {
   ]);
 ```
 
-Users can modify the task list directly in the TaskTracker component by adding new tasks or changing the default tasks.
+Les utilisateurs peuvent modifier la liste des tâches directement dans le composant `TaskTracker` en ajoutant de nouvelles tâches ou en modifiant les tâches par défaut.
 
-## How It Works
+## Comment ça fonctionne
 
-1. **Task Management:**
-   - Select or check off tasks from the Daily To-Do list.
-   - Add new punctual tasks with a priority level.
-   - Your completed tasks automatically update your productivity score.
+1. **Gestion des Tâches :**
+   - Sélectionnez ou cochez les tâches de la liste des tâches quotidiennes.
+   - Ajoutez de nouvelles tâches ponctuelles avec un niveau de priorité.
+   - Vos tâches complétées mettent automatiquement à jour votre score de productivité.
 
-2. **Mood and Sleep Tracking:**
-   - Each day, choose your mood and sleep quality. These selections are saved for tracking and reflection.
-   - You can validate your choices using a ‘Validate’ button.
+2. **Suivi de l'Humeur et du Sommeil :**
+   - Chaque jour, choisissez votre humeur et la qualité de votre sommeil. Ces choix sont enregistrés pour être suivis et analysés.
+   - Vous pouvez valider vos choix en utilisant un bouton « Valider ».
 
-3. **Productivity Score:**
-   - Points are awarded based on task completion, mood, and sleep quality.
-   - A dynamic chart tracks your productivity score over the past 30 days.
+3. **Score de Productivité :**
+   - Des points sont attribués en fonction de l'accomplissement des tâches, de l'humeur et de la qualité du sommeil.
+   - Un graphique dynamique suit votre score de productivité sur les 30 derniers jours.
 
-## Tech Stack
+## Stack Technique
 
-- **Frontend:** React.js (PWA)
-- **Backend:** Node.js with JSON file storage
-- **Styling:** CSS, with a minimalist design and neon accents
-- **Data Handling:** JSON files for tracking user data across sleep, mood, tasks, and extra tasks
+- **Frontend :** React.js (PWA)
+- **Backend :** Node.js avec stockage de fichiers JSON
+- **Style :** CSS, avec un design minimaliste et des accents néon
+- **Gestion des Données :** Fichiers JSON pour le suivi des données utilisateur concernant le sommeil, l'humeur, les tâches et les tâches supplémentaires
 
-## Installation and Setup
+## Installation et dépendances
 
-1. Clone the repository:
+1. Clonez le dépôt GitHub :
 
 ```bash
 git clone https://github.com/MathisAulagnier/My_ToDo_List.git
 ```
 
-2. Navigate to the project directory:
+2.	Accédez à la racine du projet JavaScript :
 
 ```bash
 cd My_ToDo_List/my-personal-tracker/
 ```
 
-3. Install the required dependencies:
+3.	Installez les dépendances nécessaires :
 
 ```bash
 npm install
 ```
 
-4. Start the application:
+4.	Pour lancer l’application, vous aurez besoin d’ouvrir deux terminaux :
+   - Terminal 1 : Lancez le serveur pour permettre la communication entre les fichiers :
+     
+```bash
+node server.js
+```
+
+   - Terminal 2 : Démarrez l’application :
 
 ```bash
 npm start
 ```
+
 
