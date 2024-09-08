@@ -40,10 +40,23 @@
     "Date": "2024-09-06",
     "Tasks": [
       "100 Pompes",
+      "Séance de sport",
       "Prendre des nouvelles",
       "Etudier",
+      "Manger équilibré",
       "Echecs",
       "Apprendre quelque chose de nouveau"
+    ],
+    "Score": 35
+  },
+  {
+    "Date": "2024-09-07",
+    "Tasks": [
+      "100 Pompes",
+      "Séance de sport",
+      "Etudier",
+      "Manger équilibré",
+      "Echecs"
     ],
     "Score": 25
   }

@@ -1,0 +1,4 @@
+# Nmap 7.95 scan initiated Sat Sep  7 15:31:29 2024 as: nmap -sV -sC -oN scan_initial.txt http://ctf.pakbo-et-lombrik.fr/
+Unable to split netmask from target expression: "http://ctf.pakbo-et-lombrik.fr/"
+WARNING: No targets were specified, so 0 hosts scanned.
+# Nmap done at Sat Sep  7 15:31:30 2024 -- 0 IP addresses (0 hosts up) scanned in 0.14 seconds

@@ -76,5 +76,29 @@
       }
     ],
     "Score": 15
+  },
+  {
+    "Date": "2024-09-06",
+    "ExtraTasks": [
+      {
+        "id": 1725585427576,
+        "text": "Déposer les documents du profs",
+        "completed": true,
+        "importance": "faible"
+      }
+    ],
+    "Score": 3
+  },
+  {
+    "Date": "2024-09-07",
+    "ExtraTasks": [
+      {
+        "id": 1725585369358,
+        "text": "Poster la lettre",
+        "completed": true,
+        "importance": "faible"
+      }
+    ],
+    "Score": 3
   }
 ]

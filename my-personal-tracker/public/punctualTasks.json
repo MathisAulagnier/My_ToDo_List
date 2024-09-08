@@ -6,15 +6,15 @@
     "importance": "moyen"
   },
   {
-    "id": 1725585369358,
-    "text": "Poster la lettre",
+    "id": 1725650545255,
+    "text": "Faire le diaporama pour Stage2A",
     "completed": false,
-    "importance": "faible"
+    "importance": "élevé"
   },
   {
-    "id": 1725585427576,
-    "text": "Déposer les documents du profs",
+    "id": 1725659312972,
+    "text": "Faire un beau ReadMe pour ma ToDo List et créer un executable ",
     "completed": false,
-    "importance": "faible"
+    "importance": "élevé"
   }
 ]
