@@ -85,7 +85,6 @@ Users can modify the task list directly in the TaskTracker component by adding n
 - **Backend:** Node.js with JSON file storage
 - **Styling:** CSS, with a minimalist design and neon accents
 - **Data Handling:** JSON files for tracking user data across sleep, mood, tasks, and extra tasks
-- **Deployment:** Compatible with hosting on a Raspberry Pi
 
 ## Installation and Setup
 
