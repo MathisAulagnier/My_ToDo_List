@@ -91,7 +91,7 @@ Users can modify the task list directly in the TaskTracker component by adding n
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/MathisAulagnier/My_ToDo_List.git
 ```
 
 2. Navigate to the project directory:
