@@ -1,4 +1,4 @@
-# Productivity ToDo List Application
+# Productivity ToDo List Application [French App]
 
 ## Overview
 
@@ -15,7 +15,7 @@ The **Productivity ToDo List Application** is designed to help users enhance the
    Monitor sleep quality by selecting from predefined sleep categories. These choices are saved and tracked over time to ensure consistency in your sleeping habits.
 
 2. **Mood Tracker**:  
-   Track your daily mood from various options (e.g., Joyful, Calm, Stressed, etc.), allowing you to reflect on your emotional state over time.
+   Track your daily mood from various options (e.g., Heureux, Calme, Normal, etc.), allowing you to reflect on your emotional state over time.
 
 3. **Daily To-Do List**:  
    The app offers a customizable list of daily tasks designed to enhance your productivity. Each task contributes to your overall score. Users can modify this list by adding or removing tasks directly within the `TaskTracker` component.
