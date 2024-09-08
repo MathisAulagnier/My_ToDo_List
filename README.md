@@ -97,7 +97,7 @@ git clone https://github.com/MathisAulagnier/My_ToDo_List.git
 2. Navigate to the project directory:
 
 ```bash
-cd <project-directory>
+cd My_ToDo_List/my-personal-tracker/
 ```
 
 3. Install the required dependencies:
@@ -111,6 +111,4 @@ npm install
 ```bash
 npm start
 ```
-
-5. Access the application at http://localhost:3000/ on your browser.
 
