@@ -60,11 +60,9 @@ const MoodTracker = () => {
       if (!response.ok) {
         throw new Error('Erreur lors de la mise à jour du MoodTracker');
       }
-
-      alert('MoodTracker mis à jour avec succès');
+      
     } catch (error) {
       console.error('Erreur lors de la mise à jour du MoodTracker:', error);
-      alert('Erreur lors de la mise à jour du MoodTracker');
     }
   };
 
