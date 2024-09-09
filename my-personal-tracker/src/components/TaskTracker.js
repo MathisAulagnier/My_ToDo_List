@@ -68,11 +68,8 @@ const TaskTracker = () => {
       if (!response.ok) {
         throw new Error('Erreur lors de la mise à jour du DailyTaskTracker');
       }
-
-      alert('DailyTaskTracker mis à jour avec succès');
     } catch (error) {
       console.error('Erreur lors de la mise à jour du DailyTaskTracker:', error);
-      alert('Erreur lors de la mise à jour du DailyTaskTracker');
     }
   };
 
