@@ -54,11 +54,28 @@ const PunctualTask = () => {
     .catch((error) => console.error('Erreur lors de l\'enregistrement de la tâche accomplie :', error));
   };
 
+  const getTaskColor = (importance) => {
+    switch (importance) {
+      case 'élevé':
+        return 'red';
+      case 'moyen':
+        return 'black';
+      case 'faible':
+        return 'green';
+      default:
+        return 'blue'; // Default color if no importance level is set
+    }
+  };
+
   return (
     <div className="punctual-task neon-green">
       <h2>Extra Tasks</h2>
       {tasks.length > 0 ? tasks.map((task) => (
-        <div key={task.id} className="task-p-item">
+        <div
+          key={task.id}
+          className="task-p-item"
+          style={{ color: getTaskColor(task.importance) }}
+        >
           <input
             type="checkbox"
             onChange={() => handleTaskCompletion(task)}
