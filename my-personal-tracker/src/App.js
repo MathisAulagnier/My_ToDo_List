@@ -15,8 +15,7 @@ function App() {
   const handleTaskAdded = (newTask) => {
     setTasks([...tasks, newTask]);
   };
-
-
+  
   return (
     <div className="App">
       <div className="score-section">
@@ -32,23 +31,15 @@ function App() {
           </div>
         </div>
       </div>
-      
-      {/* Section Daily Task */}
       <div className="daily-task-section">
         <TaskTracker />
       </div>
-
-      {/* Section Mood Tracker */}
       <div className="mood-section">
         <MoodTracker />
       </div>
-
-      {/* Section Sleep Tracker */}
       <div className="sleep-section">
         <SleepTracker />
       </div>
-
-      {/* Section Graph */}
       <div className="graph-section">
         <ProductivityChart />
       </div>
