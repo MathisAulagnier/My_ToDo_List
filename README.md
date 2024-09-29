@@ -9,6 +9,8 @@ L'**Application de Liste de Tâches Productive** est conçue pour aider les util
 - Ajouter des tâches ponctuelles avec des niveaux de priorité assignés.
 - Gagner des points pour chaque tâche complétée afin de suivre la productivité dans le temps via un score dynamique.
 
+
+
 ## Fonctionnalités
 
 1. **Suivi du Sommeil** :  
@@ -79,11 +81,11 @@ Les utilisateurs peuvent modifier la liste des tâches directement dans le compo
    - Des points sont attribués en fonction de l'accomplissement des tâches, de l'humeur et de la qualité du sommeil.
    - Un graphique dynamique suit votre score de productivité sur les 30 derniers jours.
 
-## Stack Technique
+## Partie Technique
 
 - **Frontend :** React.js (PWA)
 - **Backend :** Node.js avec stockage de fichiers JSON
-- **Style :** CSS, avec un design minimaliste et des accents néon
+- **Style :** CSS, avec un design minimaliste
 - **Gestion des Données :** Fichiers JSON pour le suivi des données utilisateur concernant le sommeil, l'humeur, les tâches et les tâches supplémentaires
 
 ## Installation et dépendances
