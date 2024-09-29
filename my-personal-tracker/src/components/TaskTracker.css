@@ -3,18 +3,18 @@
   background-color: #ffffff;
   border-radius: 12px;
   padding: 20px;
-  color: #333333; /* Dark text */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  color: #333333;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
 }
 
 .task-tracker:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
 .task-tracker h2 {
   font-size: 1.8em;
-  color: #00ccff; /* Light blue */
+  color: #00ccff; 
   margin-bottom: 20px;
   text-align: center;
 }
@@ -31,7 +31,7 @@
 
 .task-item:hover {
   background-color: #f0f8ff;
-  box-shadow: 0 0 10px rgba(0, 204, 255, 0.5); /* Subtle glow */
+  box-shadow: 0 0 10px rgba(0, 204, 255, 0.5); 
 }
 
 .task-item input[type="checkbox"] {
