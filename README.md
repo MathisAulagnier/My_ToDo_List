@@ -1,4 +1,5 @@
 # Application de Liste de Tâches Productive
+![Aperçu de l'interface de l'application](./TB.png)
 
 ## Aperçu
 
@@ -9,7 +10,7 @@ L'**Application de Liste de Tâches Productive** est conçue pour aider les util
 - Ajouter des tâches ponctuelles avec des niveaux de priorité assignés.
 - Gagner des points pour chaque tâche complétée afin de suivre la productivité dans le temps via un score dynamique.
 
-
+![Aperçu du graphique réalisé par les tâches](./Graph.png)
 
 ## Fonctionnalités
 
