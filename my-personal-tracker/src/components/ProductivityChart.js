@@ -9,7 +9,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Line } from 'react-chartjs-2'; // Gardez cette ligne si vous avez supprimé une autre importation de Line
+import { Line } from 'react-chartjs-2'; 
 import './ProductivityChart.css';
 
 
