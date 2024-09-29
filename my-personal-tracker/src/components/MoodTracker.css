@@ -1,20 +1,20 @@
 /* MoodTracker.css */
 .mood-tracker {
-  background-color: #ffffff; /* Light background for contrast */
+  background-color: #ffffff; 
   border-radius: 12px;
   padding: 20px;
   color: #333333; /* Dark text */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
   transition: box-shadow 0.3s ease;
 }
 
 .mood-tracker:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
 }
 
 .mood-tracker h2 {
   font-size: 1.8em;
-  color: #00ccff; /* Futuristic light blue */
+  color: #00ccff; 
   margin-bottom: 20px;
   text-align: center;
 }
@@ -24,19 +24,19 @@
   align-items: center;
   margin-bottom: 15px;
   padding: 10px;
-  border: 1px solid #00ccff; /* Light blue border */
+  border: 1px solid #00ccff;
   border-radius: 8px;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .mood-item:hover {
-  background-color: #f0f8ff; /* Light blue background on hover */
-  box-shadow: 0 0 10px rgba(0, 204, 255, 0.5); /* Subtle glow */
+  background-color: #f0f8ff; 
+  box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
 }
 
 .mood-item input[type="checkbox"] {
   margin-right: 15px;
-  transform: scale(1.3); /* Larger checkboxes for clarity */
+  transform: scale(1.3);
 }
 
 button {
