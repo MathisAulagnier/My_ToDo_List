@@ -3,7 +3,7 @@
   background-color: #ffffff;
   border-radius: 12px;
   padding: 20px;
-  color: #333333; /* Dark text */
+  color: #333333; 
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
 }
